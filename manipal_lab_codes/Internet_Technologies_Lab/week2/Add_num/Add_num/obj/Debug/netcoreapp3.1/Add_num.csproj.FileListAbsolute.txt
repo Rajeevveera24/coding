@@ -1,0 +1,13 @@
+C:\Users\rajeev\source\repos\Add_num\Add_num\bin\Debug\netcoreapp3.1\Add_num.exe
+C:\Users\rajeev\source\repos\Add_num\Add_num\bin\Debug\netcoreapp3.1\Add_num.deps.json
+C:\Users\rajeev\source\repos\Add_num\Add_num\bin\Debug\netcoreapp3.1\Add_num.runtimeconfig.json
+C:\Users\rajeev\source\repos\Add_num\Add_num\bin\Debug\netcoreapp3.1\Add_num.runtimeconfig.dev.json
+C:\Users\rajeev\source\repos\Add_num\Add_num\bin\Debug\netcoreapp3.1\Add_num.dll
+C:\Users\rajeev\source\repos\Add_num\Add_num\bin\Debug\netcoreapp3.1\Add_num.pdb
+C:\Users\rajeev\source\repos\Add_num\Add_num\obj\Debug\netcoreapp3.1\Add_num.csprojAssemblyReference.cache
+C:\Users\rajeev\source\repos\Add_num\Add_num\obj\Debug\netcoreapp3.1\Add_num.AssemblyInfoInputs.cache
+C:\Users\rajeev\source\repos\Add_num\Add_num\obj\Debug\netcoreapp3.1\Add_num.AssemblyInfo.cs
+C:\Users\rajeev\source\repos\Add_num\Add_num\obj\Debug\netcoreapp3.1\Add_num.csproj.CoreCompileInputs.cache
+C:\Users\rajeev\source\repos\Add_num\Add_num\obj\Debug\netcoreapp3.1\Add_num.dll
+C:\Users\rajeev\source\repos\Add_num\Add_num\obj\Debug\netcoreapp3.1\Add_num.pdb
+C:\Users\rajeev\source\repos\Add_num\Add_num\obj\Debug\netcoreapp3.1\Add_num.genruntimeconfig.cache

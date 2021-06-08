@@ -1,0 +1,90 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<title>
+		Bouncing Ball
+	</title>
+	<style>
+		h1{ 
+			color: black;
+			text-align: center; 
+		} 
+	</style>
+</head>
+<body> 
+	
+	<h1 id="heading" onClick = "setInterval(path, 2);" > Bounce </h1>
+
+	<canvas id = "myCanvas" width = "200" height = "700" style = "border:1px solid black;">
+		Your browser does not support the HTML5 canvas tag.
+	</canvas> 
+
+	<script> 
+		var c = document.getElementById("myCanvas"); 
+		var ctx = c.getContext("2d"); 
+		var top = 40;
+		var bottom = 660;
+		var s = 40;
+		var v = 0;
+		var u = 0; 
+		var dir = 0;
+		var a = 0.001;
+		var t = 0;
+		
+		function path(){
+
+			ctx.clearRect(0, 0, c.width, c.height);
+			ctx.beginPath();
+			ctx.arc(95, s, 40, 0, 2*Math.PI); 
+			ctx.fillStyle = "#808080";
+			ctx.fill();
+			// if(f == 0){
+			// 	i += (2 - cnt + acc);
+			// 	acc += 0.005;
+			// }
+			// if(f == 1){
+			// 	i -= (2 - cnt - acc);
+			// 	acc += 0.005;
+			// }
+			// if(i > 600){ 
+			// 	f = 1;
+			// 	acc = 0;
+			// 	// cnt = 0;
+			// }
+			// if(i < 30 + count){
+			// 	f = 0;
+			// 	acc = 0;
+			// }
+			// count += (0.1 + cnt);
+			// cnt += 0.0001;
+			if(dir == 0){
+				s += (u*t + 0.5*(a*t*t));
+				u += a;
+				if(s >= bottom){
+					s = bottom;
+					u += a;
+					t = 0;
+					dir = 1;
+				}
+			}
+			
+			if(dir == 1){
+				s = s - (u*t - 0.5*a*t*t);
+				u -= a;	
+
+				if(u < 0){
+					u = 0;
+					t = 0;
+					dir = 0;
+				}
+			}
+
+			t += 0.005;
+		}
+		
+		// setInterval(path, 2);	 
+	
+	</script> 
+
+</body>
+</html>

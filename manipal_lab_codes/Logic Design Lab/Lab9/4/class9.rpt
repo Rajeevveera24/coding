@@ -1,0 +1,511 @@
+Project Information                             d:\170905252\lab9\4\class9.rpt
+
+MAX+plus II Compiler Report File
+Version 10.2 07/10/2002
+Compiled: 09/19/2018 14:19:56
+
+Copyright (C) 1988-2002 Altera Corporation
+Any megafunction design, and related net list (encrypted or decrypted),
+support information, device programming or simulation file, and any other
+associated documentation or information provided by Altera or a partner
+under Altera's Megafunction Partnership Program may be used only to
+program PLD devices (but not masked PLD devices) from Altera.  Any other
+use of such megafunction design, net list, support information, device
+programming or simulation file, or any other related documentation or
+information is prohibited for any other purpose, including, but not
+limited to modification, reverse engineering, de-compiling, or use with
+any other silicon devices, unless such use is explicitly licensed under
+a separate agreement with Altera or a megafunction partner.  Title to
+the intellectual property, including patents, copyrights, trademarks,
+trade secrets, or maskworks, embodied in any such megafunction design,
+net list, support information, device programming or simulation file, or
+any other related documentation or information provided by Altera or a
+megafunction partner, remains with Altera, the megafunction partner, or
+their respective licensors.  No other licenses, including any licenses
+needed under any third party's intellectual property, are provided herein.
+
+
+
+***** Project compilation was successful
+
+
+
+
+** DEVICE SUMMARY **
+
+Chip/                     Input   Output   Bidir         Shareable
+POF       Device          Pins    Pins     Pins     LCs  Expanders  % Utilized
+
+class9    EPM7032LC44-6    5        16       0      16      0           50 %
+
+User Pins:                 5        16       0  
+
+
+
+Project Information                             d:\170905252\lab9\4\class9.rpt
+
+** FILE HIERARCHY **
+
+
+
+|decoder_8to3:d1|
+|decoder_8to3:d2|
+
+
+Device-Specific Information:                    d:\170905252\lab9\4\class9.rpt
+class9
+
+***** Logic for device 'class9' compiled without errors.
+
+
+
+
+Device: EPM7032LC44-6
+
+Device Options:
+    Turbo Bit                                    = ON
+    Security Bit                                 = OFF
+
+                                               
+                                               
+                                               
+                                               
+                                               
+                       V  G  G  G  G  G        
+              w  w     C  N  N  N  N  N  f  f  
+              1  2  e  C  D  D  D  D  D  5  7  
+            -----------------------------------_ 
+          /   6  5  4  3  2  1 44 43 42 41 40   | 
+      w0 |  7                                39 | f4 
+      w3 |  8                                38 | f3 
+RESERVED |  9                                37 | f8 
+     GND | 10                                36 | f2 
+RESERVED | 11                                35 | VCC 
+RESERVED | 12         EPM7032LC44-6          34 | f6 
+RESERVED | 13                                33 | f12 
+RESERVED | 14                                32 | f14 
+     VCC | 15                                31 | f1 
+RESERVED | 16                                30 | GND 
+RESERVED | 17                                29 | f0 
+         |_  18 19 20 21 22 23 24 25 26 27 28  _| 
+           ------------------------------------ 
+              R  R  R  R  G  V  f  f  f  f  f  
+              E  E  E  E  N  C  9  1  1  1  1  
+              S  S  S  S  D  C     5  0  1  3  
+              E  E  E  E                       
+              R  R  R  R                       
+              V  V  V  V                       
+              E  E  E  E                       
+              D  D  D  D                       
+
+
+N.C. = No Connect. This pin has no internal connection to the device.
+VCC = Dedicated power pin, which MUST be connected to VCC.
+GND = Dedicated ground pin or unused dedicated input, which MUST be connected to GND.
+RESERVED = Unused I/O pin, which MUST be left unconnected.
+
+
+
+Device-Specific Information:                    d:\170905252\lab9\4\class9.rpt
+class9
+
+** RESOURCE USAGE **
+
+                                                Shareable     External
+Logic Array Block     Logic Cells   I/O Pins    Expanders   Interconnect
+
+A:     LC1 - LC16     0/16(  0%)   5/16( 31%)   0/16(  0%)   0/36(  0%) 
+B:    LC17 - LC32    16/16(100%)  16/16(100%)  16/16(100%)  21/36( 58%) 
+
+
+Total dedicated input pins used:                 0/4      (  0%)
+Total I/O pins used:                            21/32     ( 65%)
+Total logic cells used:                         16/32     ( 50%)
+Total shareable expanders used:                  0/32     (  0%)
+Total Turbo logic cells used:                   16/32     ( 50%)
+Total shareable expanders not available (n/a):  16/32     ( 50%)
+Average fan-in:                                  6.00
+Total fan-in:                                    96
+
+Total input pins required:                       5
+Total output pins required:                     16
+Total bidirectional pins required:               0
+Total logic cells required:                     16
+Total flipflops required:                        0
+Total product terms required:                   80
+Total logic cells lending parallel expanders:    0
+Total shareable expanders in database:           0
+
+Synthesized logic cells:                        16/  32   ( 50%)
+
+
+
+Device-Specific Information:                    d:\170905252\lab9\4\class9.rpt
+class9
+
+** INPUTS **
+
+                                         Shareable
+                                         Expanders     Fan-In    Fan-Out
+ Pin     LC  LAB  Primitive    Code   Total Shared n/a INP  FBK  OUT  FBK  Name
+   4    (1)  (A)      INPUT               0      0   0    0    0   16    0  e
+   7    (4)  (A)      INPUT               0      0   0    0    0   16    0  w0
+   6    (3)  (A)      INPUT               0      0   0    0    0   16    0  w1
+   5    (2)  (A)      INPUT               0      0   0    0    0   16    0  w2
+   8    (5)  (A)      INPUT               0      0   0    0    0   16    0  w3
+
+
+Code:
+
+s = Synthesized pin or logic cell
+t = Turbo logic cell
++ = Synchronous flipflop
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+
+
+Device-Specific Information:                    d:\170905252\lab9\4\class9.rpt
+class9
+
+** OUTPUTS **
+
+                                         Shareable
+                                         Expanders     Fan-In    Fan-Out
+ Pin     LC  LAB  Primitive    Code   Total Shared n/a INP  FBK  OUT  FBK  Name
+  29     27    B     OUTPUT    s t        1      0   1    5    1    1    0  f0
+  31     26    B     OUTPUT    s t        1      0   1    5    1    1    0  f1
+  36     22    B     OUTPUT    s t        1      0   1    5    1    1    0  f2
+  38     20    B     OUTPUT    s t        1      0   1    5    1    1    0  f3
+  39     19    B     OUTPUT    s t        1      0   1    5    1    1    0  f4
+  41     17    B     OUTPUT    s t        1      0   1    5    1    1    0  f5
+  34     23    B     OUTPUT    s t        1      0   1    5    1    1    0  f6
+  40     18    B     OUTPUT    s t        1      0   1    5    1    1    0  f7
+  37     21    B     OUTPUT    s t        1      0   1    5    1    1    0  f8
+  24     32    B     OUTPUT    s t        1      0   1    5    1    1    0  f9
+  26     30    B     OUTPUT    s t        1      0   1    5    1    1    0  f10
+  27     29    B     OUTPUT    s t        1      0   1    5    1    1    0  f11
+  33     24    B     OUTPUT    s t        1      0   1    5    1    1    0  f12
+  28     28    B     OUTPUT    s t        1      0   1    5    1    1    0  f13
+  32     25    B     OUTPUT    s t        1      0   1    5    1    1    0  f14
+  25     31    B     OUTPUT    s t        1      0   1    5    1    1    0  f15
+
+
+Code:
+
+s = Synthesized pin or logic cell
+t = Turbo logic cell
++ = Synchronous flipflop
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+
+
+Device-Specific Information:                    d:\170905252\lab9\4\class9.rpt
+class9
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'B':
+
+                                         Logic cells placed in LAB 'B'
+        +------------------------------- LC27 f0
+        | +----------------------------- LC26 f1
+        | | +--------------------------- LC22 f2
+        | | | +------------------------- LC20 f3
+        | | | | +----------------------- LC19 f4
+        | | | | | +--------------------- LC17 f5
+        | | | | | | +------------------- LC23 f6
+        | | | | | | | +----------------- LC18 f7
+        | | | | | | | | +--------------- LC21 f8
+        | | | | | | | | | +------------- LC32 f9
+        | | | | | | | | | | +----------- LC30 f10
+        | | | | | | | | | | | +--------- LC29 f11
+        | | | | | | | | | | | | +------- LC24 f12
+        | | | | | | | | | | | | | +----- LC28 f13
+        | | | | | | | | | | | | | | +--- LC25 f14
+        | | | | | | | | | | | | | | | +- LC31 f15
+        | | | | | | | | | | | | | | | | 
+        | | | | | | | | | | | | | | | |   Other LABs fed by signals
+        | | | | | | | | | | | | | | | |   that feed LAB 'B'
+LC      | | | | | | | | | | | | | | | | | A B |     Logic cells that feed LAB 'B':
+LC27 -> * - - - - - - - - - - - - - - - | - * | <-- f0
+LC26 -> - * - - - - - - - - - - - - - - | - * | <-- f1
+LC22 -> - - * - - - - - - - - - - - - - | - * | <-- f2
+LC20 -> - - - * - - - - - - - - - - - - | - * | <-- f3
+LC19 -> - - - - * - - - - - - - - - - - | - * | <-- f4
+LC17 -> - - - - - * - - - - - - - - - - | - * | <-- f5
+LC23 -> - - - - - - * - - - - - - - - - | - * | <-- f6
+LC18 -> - - - - - - - * - - - - - - - - | - * | <-- f7
+LC21 -> - - - - - - - - * - - - - - - - | - * | <-- f8
+LC32 -> - - - - - - - - - * - - - - - - | - * | <-- f9
+LC30 -> - - - - - - - - - - * - - - - - | - * | <-- f10
+LC29 -> - - - - - - - - - - - * - - - - | - * | <-- f11
+LC24 -> - - - - - - - - - - - - * - - - | - * | <-- f12
+LC28 -> - - - - - - - - - - - - - * - - | - * | <-- f13
+LC25 -> - - - - - - - - - - - - - - * - | - * | <-- f14
+LC31 -> - - - - - - - - - - - - - - - * | - * | <-- f15
+
+Pin
+4    -> * * * * * * * * * * * * * * * * | - * | <-- e
+7    -> * * * * * * * * * * * * * * * * | - * | <-- w0
+6    -> * * * * * * * * * * * * * * * * | - * | <-- w1
+5    -> * * * * * * * * * * * * * * * * | - * | <-- w2
+8    -> * * * * * * * * * * * * * * * * | - * | <-- w3
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:                    d:\170905252\lab9\4\class9.rpt
+class9
+
+** EQUATIONS **
+
+e        : INPUT;
+w0       : INPUT;
+w1       : INPUT;
+w2       : INPUT;
+w3       : INPUT;
+
+-- Node name is 'f0' = '|Decoder_8to3:d1|~160~1' 
+-- Equation name is 'f0', type is output 
+ f0      = LCELL( _EQ001 $  GND);
+  _EQ001 =  e & !w0 & !w1 & !w2 & !w3
+         #  f0 &  w3
+         # !e &  f0
+         #  e &  f0 & !w0 & !w1 & !w2
+         #  f0 & !w0 & !w1 & !w2 & !w3;
+
+-- Node name is 'f1' = '|Decoder_8to3:d1|~159~1' 
+-- Equation name is 'f1', type is output 
+ f1      = LCELL( _EQ002 $  GND);
+  _EQ002 =  e &  w0 & !w1 & !w2 & !w3
+         #  f1 &  w3
+         # !e &  f1
+         #  e &  f1 &  w0 & !w1 & !w2
+         #  f1 &  w0 & !w1 & !w2 & !w3;
+
+-- Node name is 'f2' = '|Decoder_8to3:d1|~158~1' 
+-- Equation name is 'f2', type is output 
+ f2      = LCELL( _EQ003 $  GND);
+  _EQ003 =  e & !w0 &  w1 & !w2 & !w3
+         #  f2 &  w3
+         # !e &  f2
+         #  e &  f2 & !w0 &  w1 & !w2
+         #  f2 & !w0 &  w1 & !w2 & !w3;
+
+-- Node name is 'f3' = '|Decoder_8to3:d1|~157~1' 
+-- Equation name is 'f3', type is output 
+ f3      = LCELL( _EQ004 $  GND);
+  _EQ004 =  e &  w0 &  w1 & !w2 & !w3
+         #  f3 &  w3
+         # !e &  f3
+         #  e &  f3 &  w0 &  w1 & !w2
+         #  f3 &  w0 &  w1 & !w2 & !w3;
+
+-- Node name is 'f4' = '|Decoder_8to3:d1|~156~1' 
+-- Equation name is 'f4', type is output 
+ f4      = LCELL( _EQ005 $  GND);
+  _EQ005 =  e & !w0 & !w1 &  w2 & !w3
+         #  f4 &  w3
+         # !e &  f4
+         #  e &  f4 & !w0 & !w1 &  w2
+         #  f4 & !w0 & !w1 &  w2 & !w3;
+
+-- Node name is 'f5' = '|Decoder_8to3:d1|~155~1' 
+-- Equation name is 'f5', type is output 
+ f5      = LCELL( _EQ006 $  GND);
+  _EQ006 =  e &  w0 & !w1 &  w2 & !w3
+         #  f5 &  w3
+         # !e &  f5
+         #  e &  f5 &  w0 & !w1 &  w2
+         #  f5 &  w0 & !w1 &  w2 & !w3;
+
+-- Node name is 'f6' = '|Decoder_8to3:d1|~154~1' 
+-- Equation name is 'f6', type is output 
+ f6      = LCELL( _EQ007 $  GND);
+  _EQ007 =  e & !w0 &  w1 &  w2 & !w3
+         #  f6 &  w3
+         # !e &  f6
+         #  e &  f6 & !w0 &  w1 &  w2
+         #  f6 & !w0 &  w1 &  w2 & !w3;
+
+-- Node name is 'f7' = '|Decoder_8to3:d1|~153~1' 
+-- Equation name is 'f7', type is output 
+ f7      = LCELL( _EQ008 $  GND);
+  _EQ008 =  e &  w0 &  w1 &  w2 & !w3
+         #  f7 &  w3
+         # !e &  f7
+         #  e &  f7 &  w0 &  w1 &  w2
+         #  f7 &  w0 &  w1 &  w2 & !w3;
+
+-- Node name is 'f8' = '|Decoder_8to3:d2|~160~1' 
+-- Equation name is 'f8', type is output 
+ f8      = LCELL( _EQ009 $  GND);
+  _EQ009 =  e & !w0 & !w1 & !w2 &  w3
+         #  f8 & !w3
+         # !e &  f8
+         #  e &  f8 & !w0 & !w1 & !w2
+         #  f8 & !w0 & !w1 & !w2 &  w3;
+
+-- Node name is 'f9' = '|Decoder_8to3:d2|~159~1' 
+-- Equation name is 'f9', type is output 
+ f9      = LCELL( _EQ010 $  GND);
+  _EQ010 =  e &  w0 & !w1 & !w2 &  w3
+         #  f9 & !w3
+         # !e &  f9
+         #  e &  f9 &  w0 & !w1 & !w2
+         #  f9 &  w0 & !w1 & !w2 &  w3;
+
+-- Node name is 'f10' = '|Decoder_8to3:d2|~158~1' 
+-- Equation name is 'f10', type is output 
+ f10     = LCELL( _EQ011 $  GND);
+  _EQ011 =  e & !w0 &  w1 & !w2 &  w3
+         #  f10 & !w3
+         # !e &  f10
+         #  e &  f10 & !w0 &  w1 & !w2
+         #  f10 & !w0 &  w1 & !w2 &  w3;
+
+-- Node name is 'f11' = '|Decoder_8to3:d2|~157~1' 
+-- Equation name is 'f11', type is output 
+ f11     = LCELL( _EQ012 $  GND);
+  _EQ012 =  e &  w0 &  w1 & !w2 &  w3
+         #  f11 & !w3
+         # !e &  f11
+         #  e &  f11 &  w0 &  w1 & !w2
+         #  f11 &  w0 &  w1 & !w2 &  w3;
+
+-- Node name is 'f12' = '|Decoder_8to3:d2|~156~1' 
+-- Equation name is 'f12', type is output 
+ f12     = LCELL( _EQ013 $  GND);
+  _EQ013 =  e & !w0 & !w1 &  w2 &  w3
+         #  f12 & !w3
+         # !e &  f12
+         #  e &  f12 & !w0 & !w1 &  w2
+         #  f12 & !w0 & !w1 &  w2 &  w3;
+
+-- Node name is 'f13' = '|Decoder_8to3:d2|~155~1' 
+-- Equation name is 'f13', type is output 
+ f13     = LCELL( _EQ014 $  GND);
+  _EQ014 =  e &  w0 & !w1 &  w2 &  w3
+         #  f13 & !w3
+         # !e &  f13
+         #  e &  f13 &  w0 & !w1 &  w2
+         #  f13 &  w0 & !w1 &  w2 &  w3;
+
+-- Node name is 'f14' = '|Decoder_8to3:d2|~154~1' 
+-- Equation name is 'f14', type is output 
+ f14     = LCELL( _EQ015 $  GND);
+  _EQ015 =  e & !w0 &  w1 &  w2 &  w3
+         #  f14 & !w3
+         # !e &  f14
+         #  e &  f14 & !w0 &  w1 &  w2
+         #  f14 & !w0 &  w1 &  w2 &  w3;
+
+-- Node name is 'f15' = '|Decoder_8to3:d2|~153~1' 
+-- Equation name is 'f15', type is output 
+ f15     = LCELL( _EQ016 $  GND);
+  _EQ016 =  e &  w0 &  w1 &  w2 &  w3
+         #  f15 & !w3
+         # !e &  f15
+         #  e &  f15 &  w0 &  w1 &  w2
+         #  f15 &  w0 &  w1 &  w2 &  w3;
+
+
+
+--     Shareable expanders that are duplicated in multiple LABs:
+--     (none)
+
+
+
+
+Project Information                             d:\170905252\lab9\4\class9.rpt
+
+** COMPILATION SETTINGS & TIMES **
+
+Processing Menu Commands
+------------------------
+
+Design Doctor                             = off
+
+Logic Synthesis:
+
+   Synthesis Type Used                    = Standard
+
+   Default Synthesis Style                = NORMAL
+
+      Logic option settings in 'NORMAL' style for 'MAX7000' family
+
+      DECOMPOSE_GATES                     = on
+      DUPLICATE_LOGIC_EXTRACTION          = on
+      MINIMIZATION                        = full
+      MULTI_LEVEL_FACTORING               = on
+      NOT_GATE_PUSH_BACK                  = on
+      PARALLEL_EXPANDERS                  = off
+      REDUCE_LOGIC                        = on
+      REFACTORIZATION                     = on
+      REGISTER_OPTIMIZATION               = on
+      RESYNTHESIZE_NETWORK                = on
+      SLOW_SLEW_RATE                      = off
+      SOFT_BUFFER_INSERTION               = on
+      SUBFACTOR_EXTRACTION                = on
+      TURBO_BIT                           = on
+      XOR_SYNTHESIS                       = on
+      IGNORE_SOFT_BUFFERS                 = off
+      USE_LPM_FOR_AHDL_OPERATORS          = off
+
+   Other logic synthesis settings:
+
+      Automatic Global Clock              = on
+      Automatic Global Clear              = on
+      Automatic Global Preset             = on
+      Automatic Global Output Enable      = on
+      Automatic Fast I/O                  = off
+      Automatic Register Packing          = off
+      Automatic Open-Drain Pins           = on
+      Automatic Implement in EAB          = off
+      One-Hot State Machine Encoding      = off
+      Optimize                            = 5
+
+Default Timing Specifications: None
+
+Cut All Bidir Feedback Timing Paths       = on
+Cut All Clear & Preset Timing Paths       = on
+
+Ignore Timing Assignments                 = on
+
+Functional SNF Extractor                  = off
+
+Linked SNF Extractor                      = off
+Timing SNF Extractor                      = on
+Optimize Timing SNF                       = off
+Generate AHDL TDO File                    = off
+Fitter Settings                           = NORMAL
+Smart Recompile                           = off
+Total Recompile                           = off
+
+Interfaces Menu Commands
+------------------------
+
+EDIF Netlist Writer                       = off
+Verilog Netlist Writer                    = off
+VHDL Netlist Writer                       = off
+
+Compilation Times
+-----------------
+
+   Compiler Netlist Extractor             00:00:00
+   Database Builder                       00:00:00
+   Logic Synthesizer                      00:00:00
+   Partitioner                            00:00:00
+   Fitter                                 00:00:00
+   Timing SNF Extractor                   00:00:00
+   Assembler                              00:00:00
+   --------------------------             --------
+   Total Time                             00:00:00
+
+
+Memory Allocated
+-----------------
+
+Peak memory allocated during compilation  = 3,770K

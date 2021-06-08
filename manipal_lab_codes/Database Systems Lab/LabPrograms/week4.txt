@@ -1,0 +1,280 @@
+1)	SELECT C.course_id, COUNT(DISTINCT S.id)
+    	FROM student S, course C, takes T
+    	WHERE S.id = T.id AND T.course_id = C.course_id
+	GROUP BY C.course_id; 
+
+COURSE_I COUNT(DISTINCTS.ID)
+-------- -------------------
+HIS-351                    1
+EE-181                     1
+CS-101                     6
+CS-347                     2
+FIN-201                    1
+CS-319                     2
+BIO-101                    1
+PHY-101                    1
+CS-315                     2
+CS-190                     2
+MU-199                     1
+
+COURSE_I COUNT(DISTINCTS.ID)
+-------- -------------------
+BIO-301                    1
+
+12 rows selected.
+
+2)	SELECT D.dept_name, COUNT(S.id)
+	FROM department D, student S
+	WHERE D.dept_name = S.dept_name
+	GROUP BY D.dept_name
+	HAVING COUNT(S.id) >= 2;
+
+DEPT_NAME            COUNT(S.ID)
+-------------------- -----------
+Elec. Eng.                     2
+Physics                        3
+Comp. Sci.                     4
+
+3)	SELECT dept_name, COUNT(course_id)
+	FROM course
+	GROUP BY dept_name;
+
+DEPT_NAME            COUNT(COURSE_ID)
+-------------------- ----------------
+Elec. Eng.                          1
+Physics                             1
+Comp. Sci.                          5
+Finance                             1
+Biology                             3
+History                             1
+Music                               1
+
+7 rows selected.
+
+4)	SELECT dept_name, AVG(salary)
+	FROM instructor
+	GROUP BY dept_name
+	HAVING AVG(salary) > 42000;
+
+DEPT_NAME            AVG(SALARY)
+-------------------- -----------
+Elec. Eng.                 80000
+Physics                    91000
+Comp. Sci.            77333.3333
+Finance                    85000
+Biology                    72000
+History                    61000
+
+6 rows selected.
+
+5)	SELECT S.sec_id, COUNT(T.id)
+	FROM section S, takes T
+	WHERE S.course_id = T.course_id AND S.sec_id = T.sec_id AND S.semester = T.semester AND S.year = T.year AND S.year = 2009 AND S.semester = 'Spring'
+	GROUP BY S.sec_id;
+
+SEC_ID   COUNT(T.ID)
+-------- -----------
+1                  1
+2                  2
+
+6)	SELECT *
+	FROM prereq
+	ORDER BY course_id;
+
+COURSE_I PREREQ_I
+-------- --------
+BIO-301  BIO-101
+BIO-399  BIO-101
+CS-190   CS-101
+CS-315   CS-101
+CS-319   CS-101
+CS-347   CS-101
+EE-181   PHY-101
+
+7 rows selected.
+
+7)	SELECT * 
+	FROM instructor
+	ORDER BY salary DESC;
+
+ID    NAME                 DEPT_NAME                SALARY
+----- -------------------- -------------------- ----------
+22222 Einstein             Physics                   95000
+83821 Brandt               Comp. Sci.                92000
+12121 Wu                   Finance                   90000
+33456 Gold                 Physics                   87000
+98345 Kim                  Elec. Eng.                80000
+76543 Singh                Finance                   80000
+45565 Katz                 Comp. Sci.                75000
+76766 Crick                Biology                   72000
+10101 Srinivasan           Comp. Sci.                65000
+58583 Califieri            History                   62000
+32343 El Said              History                   60000
+
+ID    NAME                 DEPT_NAME                SALARY
+----- -------------------- -------------------- ----------
+15151 Mozart               Music                     40000
+
+12 rows selected.
+
+8)	SELECT MAX(tot_salary)
+	FROM 	(SELECT SUM(salary) AS tot_salary
+		 FROM instructor
+		 GROUP BY dept_name)
+	;
+MAX(TOT_SALARY)
+---------------
+         232000
+
+9)	SELECT dept_name,avg_salary
+	FROM	(SELECT dept_name, AVG(salary) AS avg_salary
+		 FROM instructor
+		 GROUP BY dept_name)
+	WHERE avg_salary > 42000;
+
+DEPT_NAME            AVG_SALARY
+-------------------- ----------
+Elec. Eng.                80000
+Physics                   91000
+Comp. Sci.           77333.3333
+Finance                   85000
+Biology                   72000
+History                   61000
+
+6 rows selected.
+
+10)	SELECT section_id	
+ 	FROM    (SELECT S.sec_id AS section_id, COUNT(T.id) AS section_count
+		 FROM section S, takes T
+		 WHERE S.course_id = T.course_id AND S.sec_id = T.sec_id AND S.semester = T.semester AND S.year = T.year AND S.year = 2010 AND S.semester = 'Spring'
+		 GROUP BY S.sec_id)
+	WHERE section_count >= ALL	(SELECT  COUNT(T.id) AS section_count
+		 			 FROM section S, takes T
+		 			 WHERE S.course_id = T.course_id AND S.sec_id = T.sec_id AND S.semester = T.semester AND S.year = T.year AND S.year = 2010 AND S.semester = 'Spring'
+		 			 GROUP BY S.sec_id)
+	;
+SECTION_
+--------
+1
+
+11)	
+
+12)	SELECT I1.dept_name, AVG(I1.salary)
+	FROM instructor I1
+	WHERE (SELECT COUNT(id)
+	       FROM instructor I2
+	       WHERE I2.dept_name = I1.dept_name
+	       GROUP BY dept_name) >=2
+	GROUP BY I1.dept_name
+	HAVING AVG(I1.salary) > 50000;
+
+DEPT_NAME            AVG(I1.SALARY)
+-------------------- --------------
+Physics                       91000
+Comp. Sci.               77333.3333
+Finance                       85000
+History                       61000
+
+13)	WITH temp_budget(budget) AS (
+		SELECT MAX(budget)
+		FROM department)
+	SELECT dept_name 
+	FROM department,temp_budget
+	WHERE department.budget = temp_budget.budget;
+	
+DEPT_NAME
+--------------------
+Finance
+
+14)	WITH total_salary(dept_name,total) AS (
+		SELECT dept_name, SUM(salary)
+		FROM instructor
+		GROUP BY dept_name) ,
+	avg_total_salary(avg_total) AS (
+		SELECT AVG(total)
+		FROM total_salary)
+	SELECT dept_name
+	FROM total_salary,avg_total_salary
+	WHERE total > avg_total;
+
+DEPT_NAME
+--------------------
+Physics
+Comp. Sci.
+Finance
+
+15)	WITH sect AS
+		(SELECT S.sec_id AS section_id, COUNT(T.id) AS section_count
+		 FROM section S, takes T
+		 WHERE S.course_id = T.course_id AND S.sec_id = T.sec_id AND S.semester = T.semester AND S.year = T.year AND S.year = 2009 AND S.semester = 'Fall'
+		 GROUP BY S.sec_id)		
+	SELECT S1.section_id
+	FROM sect S1,sect S2
+	WHERE S1.section_count = MAX(S2.section_count);
+
+16)	
+
+16)	SAVEPOINT S1;
+
+Savepoint Created.
+
+	DELETE FROM instructor WHERE dept_name = 'Finance';
+
+2 rows deleted.
+
+	ROLLBACK;
+
+Rollback complete.
+
+17)	SAVEPOINT S2;
+	
+Savepoint Created.
+
+	DELETE FROM course WHERE dept_name LIKE '%Comp%';
+
+5 rows deleted.
+
+	ROLLBACK;
+
+Rollback complete.
+
+18)	INSERT INTO department VALUES ('IT',NULL,NULL);
+
+1 row created.
+
+	UPDATE student SET dept_name = 'IT' WHERE dept_name LIKE '%Comp.%';
+
+4 rows updated.
+
+	ROLLBACK;
+
+Rollback complete.
+
+19)	UPDATE instructor SET salary = 1.03*salary WHERE salary > 90000;
+
+2 rows updated.
+
+	UPDATE instructor SET salary = 1.05*salary WHERE salary <= 90000;
+
+9 rows updated.
+
+	ROLLBACK;
+
+Rollback complete.
+
+20)	INSERT INTO student (SELECT 100 + id,name,dept_name,0
+					FROM instructor);
+
+12 rows created.
+
+	ROLLBACK;
+
+Rollback complete.
+
+21) 	DELETE FROM instructor WHERE salary < (SELECT AVG(salary) FROM instructor);
+
+5 rows deleted.
+
+	ROLLBACK;
+
+Rollback complete.

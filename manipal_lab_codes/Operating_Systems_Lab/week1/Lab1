@@ -1,0 +1,17 @@
+1.
+	i)	mkdir dir dir/dir1 dir/dir2
+	ii)	echo 'File1' > dir/dir1/file1.txt | echo 'File2' > dir/dir1/file2.txt | echo 'File3' > dir/dir1/file3.txt
+	iii)	cp dir/dir1/file1.txt dir/dir2
+	iv)	ls -l | wc -l > dir/dir2/file.txt | who | wc -l >> dir/dir2/file.txt
+	v)	ls -p | grep -v / | ls [aA]*
+	vi)	sort file2.txt || echo 'Failed to sort'
+	vii)	head -5 dir/dir1/file1.txt && tail -5 dir/dir1/file1.txt
+	viii)	pwd >> file2.txt | date >> file2.txt | ls>>file2.txt	
+
+1.
+	i)	
+	ii)	cat * | grep 50 | wc -l
+	iii)	cat file2.txt | grep OS | head -2
+
+
+		sort -k1.3,1.17 -k1.1,1.2 file4.txt

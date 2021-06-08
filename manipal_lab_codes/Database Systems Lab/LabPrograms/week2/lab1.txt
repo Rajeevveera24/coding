@@ -1,0 +1,22 @@
+CREATE TABLE student(
+	reg_no NUMBER(5),
+	stu_name VARCHAR(20),
+	stu_age NUMBER(5),
+	stu_dob DATE,
+	subject1_marks NUMBER(4,2),
+	subject2_marks NUMBER(4,2),
+	subject3_marks NUMBER(4,1)
+);
+
+INSERT INTO student VALUES (101,'AAA',16,'03-jul-88',80,90,98);
+
+ALTER TABLE student ADD (gender CHAR(5));
+
+ALTER TABLE student DROP COLUMN gender;
+
+TRUNCATE TABLE student;
+ALTER TABLE student MODIFY (stu_age NUMBER(3));
+
+RENAME student TO students;
+
+DROP TABLE students;

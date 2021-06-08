@@ -1,0 +1,200 @@
+1.	SELECT dob,address
+	FROM employee
+	WHERE fname = 'John' AND mname = 'B' AND lname = 'Smith';
+
+DOB       ADDRESS
+--------- ----------------------------------------
+21-FEB-89 5th Avenue, NY
+
+
+	SELECT E.fname,E.mname,E.lname,E.address
+	FROM employee E, department D
+	WHERE E.dept_no = D.num AND D.name = 'Research';
+
+FNAME                MNAME                LNAME                ADDRESS
+-------------------- -------------------- -------------------- ----------------------------------------
+John                 B                    Smith                5th Avenue, NY
+Vaishnav             V                    Nimkar               Manipal
+
+
+2.	SELECT P.num, P.dept_num, E.lname,E.address, E.dob
+	FROM project P INNER JOIN department D ON D.num = P.dept_num INNER JOIN employee E ON D.num = E.dept_no 
+	WHERE P.loc = 'Stanford' AND D.man_ssn = E.ssn;
+
+       NUM   DEPT_NUM LNAME                ADDRESS                                  DOB
+---------- ---------- -------------------- ---------------------------------------- ---------
+         1          1 Finch                World                                    10-NOV-95
+
+
+
+	SELECT * FROM employee E INNER JOIN department D ON E.dept_no = D.num;
+
+4.	SELECT DISTINCT (salary)
+	FROM employee;
+
+    SALARY
+----------
+    250000
+     89000
+    192000
+    800000
+    112000
+
+
+5.	SELECT E1.fname AS first_name, E1.lname AS last_name, E2.fname AS sup_first_name, E2.lname AS sep_last_name
+	FROM employee E1, employee E2
+	WHERE E1.super_ssn = E2.ssn; 
+
+FIRST_NAME           LAST_NAME            SUP_FIRST_NAME       SEP_LAST_NAME
+-------------------- -------------------- -------------------- --------------------
+Sameen               Shaw                 Harold               Finch
+John                 Smith                Harold               Finch
+Vaishnav             Nimkar               Samantha             Prabhu
+
+
+6.	(SELECT DISTINCT(P.num)
+	FROM project P INNER JOIN works_on W ON W.pno = P.num INNER JOIN Employee E ON E.ssn = W.essn
+	WHERE E.lname = 'Smith')
+	UNION
+	(SELECT DISTINCT(P.num)
+	FROM project P INNER JOIN department D ON p.dept_num = D.num INNER JOIN employee E on E.dept_no = D.num
+	WHERE E.ssn = D.man_ssn AND E.lname = 'Smith');
+	
+       NUM
+----------
+         2
+
+
+9.	SELECT ssn,fname 
+	FROM employee
+	WHERE address LIKE '%World%';
+
+       SSN FNAME
+---------- --------------------
+       101 Harold
+
+
+10.	SAVEPOINT s;
+Savepoint Created
+	UPDATE employee
+	SET salary = 1.1*salary
+	WHERE ssn IN	(SELECT W.essn
+			 FROM works_on W,project P
+			 WHERE W.pno = P.num AND P.name LIKE '%ProjectX%'); 
+1 row updated.
+	SELECT ssn,fname,salary
+	FROM employee;
+		
+       SSN FNAME                    SALARY
+---------- -------------------- ----------
+       101 Harold                   211200
+       102 John                     112000
+       103 Sameen                   112000
+       104 Samantha                 250000
+       105 Vaishnav                  89000
+       106 John                     800000
+
+	ROLLBACK;
+Rollback complete.
+
+11.	SELECT ssn,fname
+	FROM employee
+	WHERE dept_no = 2 AND salary>70000 AND salary<200000;
+
+       SSN FNAME
+---------- --------------------
+       102 John
+       105 Vaishnav
+
+
+12.	SELECT E.ssn, E.fname, E.lname, P.num, P.name, D.name
+	FROM employee E INNER JOIN works_on W ON e.ssn = W.essn INNER JOIN project P ON P.num = W.pno INNER JOIN department D ON D.num = P.dept_num
+	ORDER BY D.name, lname, fname;
+
+       SSN FNAME                LNAME                       NUM NAME                 NAME
+---------- -------------------- -------------------- ---------- -------------------- --------------------
+       101 Harold               Finch                         1 ProjectX             Admin
+       103 Sameen               Shaw                          3 ProjectZ             Finance
+       102 John                 Smith                         2 ProjectY             Research
+       104 Samantha             Prabhu                        4 ProjectW             Sales
+
+
+13.	SELECT fname, mname, lname
+	FROM employee
+	WHERE super_ssn IS NULL;
+
+FNAME                MNAME                LNAME
+-------------------- -------------------- --------------------
+Harold               J                    Finch
+Samantha             R                    Prabhu
+John                 F                    Greer
+
+
+14.	INSERT INTO dependent VALUES (101, 'Harold', 'M', '02-JAN-03', 'other');
+
+1 row created.
+	
+	SELECT E.fname
+	FROM employee E, dependent D
+	WHERE e.fname = D.name AND e.ssn = D.essn AND E.sex = D.sex;
+FNAME
+--------------------
+Harold
+
+
+15.	SELECT 	E.fname 
+	FROM 	EMPLOYEE E
+	WHERE 	E.ssn NOT IN 	(SELECT essn
+				 FROM dependent);
+FNAME
+--------------------
+John
+Vaishnav
+
+16.	SELECT 	ssn,fname
+	FROM 	employee
+	WHERE 	ssn IN 	(SELECT essn FROM dependent)
+		AND ssn IN (SELECT man_ssn FROM department);
+
+       SSN FNAME
+---------- --------------------
+       101 Harold
+       102 John
+       104 Samantha
+
+
+17.	SELECT 	W.Essn AS ssn
+ 	FROM 	works_on W
+	WHERE 	W.pno IN (701,702,703);
+
+       SSN
+----------
+       101
+       102
+       103
+
+
+18.	SELECT 	SUM(salary) AS sum, MAX(salary) AS maximum, MIN(salary) AS minimum, AVG(salary) AS average
+	FROM 	employee; 
+
+       SUM    MAXIMUM    MINIMUM    AVERAGE
+---------- ---------- ---------- ----------
+   1555000     800000      89000 259166.667
+
+
+19.	SELECT 	SUM(salary) AS sum, MAX(salary) AS maximum, MIN(salary) AS minimum, AVG(salary) AS average
+	FROM 	(SELECT E.salary AS salary
+		 FROM employee E, department D
+		 WHERE E.dept_no = D.num AND D.name LIKE '%Research%');
+
+       SUM    MAXIMUM    MINIMUM    AVERAGE
+---------- ---------- ---------- ----------
+    201000     112000      89000     100500
+
+
+20.
+
+21.
+
+22.
+

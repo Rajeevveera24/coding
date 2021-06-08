@@ -1,0 +1,130 @@
+1)      CREATE TABLE salary_raise(instructor_id NUMBER(5), raise_date DATE, raise_amt NUMBER(6));
+
+        DECLARE
+        dept instructor.dept_name%TYPE := '&dept_name';
+        r_amt instructor.salary%TYPE;
+        CURSOR c IS SELECT * FROM instructor FOR UPDATE;
+        BEGIN
+        FOR temp IN c
+        LOOP
+                IF temp.dept_name = dept THEN
+                        r_amt := 0.05*temp.salary;
+                        UPDATE instructor SET salary = salary + r_amt WHERE CURRENT OF c;
+                        INSERT INTO salary_raise VALUES (temp.id, '12-MAR-2019',r_amt);
+                END IF;
+        END LOOP;
+        END;
+        /
+
+        Enter value for dept_name: History
+        old   2:         dept instructor.dept_name%TYPE := '&dept_name';
+        new   2:         dept instructor.dept_name%TYPE := 'History';
+
+        PL/SQL procedure successfully completed.
+
+2)      DECLARE
+                CURSOR c IS SELECT * FROM student ORDER BY tot_cred;
+                s_id student.id%TYPE;
+                name student.name%TYPE;
+                dept student.dept_name%TYPE;
+                tot_c student.tot_cred%TYPE;
+        BEGIN
+                OPEN c;
+                LOOP
+                        FETCH c INTO s_id,name,dept,tot_c;
+                        EXIT WHEN c%ROWCOUNT > 10;
+                        DBMS_OUTPUT.PUT_LINE(s_id ||' '||name||' '||dept||' '||tot_c);
+                END LOOP;
+                CLOSE c;
+        END;
+        /
+
+        70557 Snow Physics 0
+        12345 Shankar Comp. Sci. 32
+        55739 Sanchez Music 38
+        45678 Levy Physics 46
+        54321 Williams Comp. Sci. 54
+        44553 Peltier Physics 56
+        76543 Brown Comp. Sci. 58
+        76653 Aoi Elec. Eng. 60
+        19991 Brandt History 80
+        98765 Bourikas Elec. Eng. 98
+
+        PL/SQL procedure successfully completed.
+
+3)
+
+4)      DECLARE
+                CURSOR c IS SELECT * FROM takes FOR UPDATE;
+                v student.tot_cred%TYPE;
+        BEGIN
+                FOR temp in c
+                LOOP
+                        IF temp.course_id = 'CS-101' THEN
+                                SELECT tot_cred INTO v FROM student WHERE id = temp.id;
+                                IF v < 40 THEN
+                                        DELETE FROM takes WHERE CURRENT OF c;
+                                END IF;
+                        END IF;
+                END LOOP;
+        END;
+        /
+        PL/SQL procedure successfully completed.
+
+5)      DECLARE
+        CURSOR c(c_id course.course_id%TYPE) IS SELECT * FROM instructor NATURAL JOIN teaches NATURAL JOIN course WHERE course_id = c_id;
+        c_id course.course_id%TYPE := '&course_id';
+        BEGIN
+                FOR temp IN c(c_id)
+                LOOP
+                        DBMS_OUTPUT.PUT_LINE(temp.id || '  ' ||temp.name);
+                END LOOP;
+        END;
+        /
+
+        Enter value for course_id: CS-101
+        old   3:         c_id course.course_id%TYPE := '&course_id';
+        new   3:         c_id course.course_id%TYPE := 'CS-101';
+        10101  Srinivasan
+        45565  Katz
+
+        PL/SQL procedure successfully completed.
+
+6)      DECLARE
+                ins instructor.id%TYPE := '&advisor_id';
+                CURSOR c(ins_id advisor.i_id%TYPE) IS SELECT DISTINCT s_id FROM ADVISOR A INNER JOIN teaches Te ON A.i_id = Te.id   INNER JOIN takes Ta ON Ta.course_id = Te.course_id WHERE A.s_id = Ta.id AND A.i_id = ins_id;
+        BEGIN
+                FOR temp IN c(ins)
+                LOOP
+                        DBMS_OUTPUT.PUT_LINE(temp.s_id);
+                END LOOP;
+        END;
+        /
+
+        Enter value for advisor_id: 45565
+        old   2:                 ins instructor.id%TYPE := '&advisor_id';
+        new   2:                 ins instructor.id%TYPE := '45565';
+        00128
+        76543
+
+        PL/SQL procedure successfully completed.
+
+7)      DECLARE
+        CURSOR c IS SELECT * FROM instructor FOR UPDATE;
+        v NUMBER(10);
+        b department.budget%TYPE;
+        BEGIN
+                SAVEPOINT s2;
+                FOR temp IN c
+                LOOP
+                        UPDATE instructor SET salary = 1.2*salary WHERE dept_name = 'Biology';
+                END LOOP;
+                SELECT SUM(salary) INTO v FROM instructor;
+                SELECT budget INTO b FROM department WHERE dept_name = 'Biology';
+                IF v > b THEN
+                        ROLLBACK TO SAVEPOINT s2;
+                END IF;
+        END;
+        /
+
+        PL/SQL procedure successfully completed.

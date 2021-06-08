@@ -1,0 +1,58 @@
+Simple Queries
+
+1.	Select the names of all customers along with their account numbers, type and balance.
+
+	SELECT C.name, A.acc_no, A.type, A.balance
+	FROM customer C INNER JOIN customer_accounts CA ON C.aadhaar = CA.customer_aadhaar INNER JOIN account A ON CA.acc_no = A.acc_no
+	ORDER BY A.acc_no;
+
+NAME                          ACC_NO TYPE        BALANCE
+------------------------- ---------- -------- ----------
+Prithvi                        10001 savings      400000
+Vaishnav                       10002 current      500000
+Eshan                          10003 savings      200000
+Anubhav                        10004 other        100000
+Prithvi                        10005 joint        300000
+Vaishnav                       10005 joint        300000
+
+6 rows selected.
+
+
+2.	Select the name and loan number of all customers who have taken a loan.
+
+	SELECT C.name,L.loan_no
+	FROM customer C INNER JOIN loan L ON C.aadhaar = L.customer_aadhaar;
+
+NAME                         LOAN_NO
+------------------------- ----------
+Prithvi                          111
+Vaishnav                         121
+Eshan                            131
+Anubhav                          141
+
+Complex Queries
+
+1.	Find the name of the bank which has the maximum number of customers.
+
+	WITH bank_cust(bcode,name,num_cust) AS (SELECT B.code,B.name,COUNT(C.aadhaar)
+					     FROM Bank B INNER JOIN Account A ON A.code = B.code INNER JOIN customer_accounts CA ON CA.acc_no = A.acc_no INNER JOIN customer C ON CA.customer_aadhaar = C.aadhaar
+					     GROUP BY B.code,B.name),
+	bank_cust_max(num_cust) AS (SELECT MAX(num_cust) FROM bank_cust)
+	SELECT B1.bcode,B1.name
+	FROM bank_cust B1, bank_cust_max B2
+	WHERE B1.num_cust = B2.num_cust;
+
+     BCODE NAME
+---------- ------------------------------
+       101 Syndicate
+
+2.	Display the details of those banks which have a branch in a city where any bank is head quartered.
+
+	WITH city_add AS (SELECT address FROM bank)
+	SELECT B.code, B.name
+	FROM bank B INNER JOIN branch Br ON B.code = Br.code
+	WHERE Br.address IN (SELECT * FROM city_add);
+
+      CODE NAME
+---------- ------------------------------
+       102 ICICI

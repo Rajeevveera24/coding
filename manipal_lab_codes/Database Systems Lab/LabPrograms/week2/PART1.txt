@@ -1,0 +1,67 @@
+1) CREATE TABLE Employee(
+	EmpNo NUMBER(5) PRIMARY KEY,
+	EmpName VARCHAR(20) NOT NULL,
+	Gender CHAR(1) NOT NULL CHECK (Gender IN ('M','F')),
+	Salary NUMBER(6) NOT NULL,
+	Address VARCHAR(30) NOT NULL,
+	DNo NUMBER(5) 
+);
+
+2) CREATE TABLE Department(
+	DeptNo NUMBER(5) PRIMARY KEY,
+	DeptName VARCHAR(20) UNIQUE NOT NULL,
+	Location VARCHAR(10)
+);
+
+3) ALTER TABLE Employee ADD CONSTRAINT FK FOREIGN KEY(DNo) REFERENCES Department(DeptNo);
+
+4) 	INSERT INTO Department VALUES (00101,'cse','AB5');
+	INSERT INTO Department VALUES (00001,'mech','AB1');
+	INSERT INTO Department VALUES (00010,'civil','AB2');
+	INSERT INTO Department VALUES (00011,'eee','AB1');
+	INSERT INTO Employee VALUES (12345,'Rajeev','M',600000,'1016, Block 14, MIT Hostels',00101);
+	INSERT INTO Employee VALUES (12346,'Raj','M',700000,'1001, Block 15, MIT Hostels',00001);
+	INSERT INTO Employee VALUES (12358,'Rajesh','M',400000,'101, Block 15, MIT Hostels',00010);
+	INSERT INTO Employee VALUES (12379,'Rajni','F',500000,'234, Block 13, MIT Hostels',00011);
+	
+5) 	INSERT INTO Employee VALUES (12345,'Qwerty','D',390000,NULL,12121);
+	
+	ERROR at line 1:
+	ORA-01400: cannot insert NULL into ("C##D31"."EMPLOYEE"."ADDRESS")
+	
+	INSERT INTO Employee VALUES (12345,'asd','D',300000,'sdf',23456);
+	
+	ERROR at line 1:
+	ORA-02290: check constraint (C##D31.SYS_C0013130) violated
+
+	INSERT INTO Employee VALUES (12345,'asd',M',300000,'sdf',23456);	
+
+	ERROR at line 1:
+	ORA-00001: unique constraint (C##D31.SYS_C0013131) violated
+
+6) 	DELETE FROM Department WHERE DeptName = 'cse';
+
+	DELETE FROM Department WHERE DeptName = 'cse'
+	*
+	ERROR at line 1:
+	ORA-02292: integrity constraint (C##D31.FK) violated - child record found
+
+	UPDATE Department SET DeptNo = 00111 WHERE DeptNo = 00011;
+
+	UPDATE Department SET DeptNo = 00111 WHERE DeptNo = 00011
+	*
+	ERROR at line 1:
+	ORA-02292: integrity constraint (C##D31.FK) violated - child record found
+
+7)	ALTER TABLE Employee DROP CONSTRAINT FK;
+	ALTER TABLE Employee ADD CONSTRAINT FK FOREIGN KEY(DNo) REFERENCES Department(DeptNo) ON DELETE CASCADE;
+	
+8)	ALTER TABLE Employee MODIFY Salary NUMBER(6) DEFAULT(100000);
+
+	INSERT INTO Employee (EmpNo, EmpName, Gender, Address, DNo) VALUES (12456,'Kamala','F','34, Yale, USA',00101);
+
+	SELECT EmpName, Salary FROM Employee WHERE EmpNo = 12456;
+
+	EMPNAME                  SALARY
+	-------------------- ----------
+	Kamala                   100000

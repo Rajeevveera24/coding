@@ -1,0 +1,64 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title> Wishing you Page </title> 
+	<link rel="stylesheet" href="top_nav.css">
+	<style> 
+		body 
+		{ 
+			background-color: lightpink; 
+		} 
+		h1 
+		{ 
+			color: black;
+			text-align: center; 
+		} 
+		p 
+		{ 
+			font-family: verdana; 
+			font-size: 20px; 
+		} 
+	</style>
+
+</head>
+
+<body>
+	
+	<div class="topnav" id = "myTopNav" onClick = "idPos(this.id)">
+  			<a class="active" href="#home">Home</a>
+ 			<a href="#news">News</a>
+  			<a href="#contact">Contact</a>
+  			<a href="#about">About</a>
+	</div>
+
+	<h1 id="hour"></h1>
+	<h1 id="text"></h1>
+
+
+	<script>
+
+		function s(){
+			var d = new Date();
+			var obj1 = document.getElementById("hour");
+			var h = d.getHours();
+			obj1.innerHTML = d;
+			var obj2 = document.getElementById("text");
+			if(h >= 3 && h < 12){
+				obj2.innerHTML = "Good Morning";
+			}
+			else if(h >=12 && h < 17){
+				obj2.innerHTML = "Good Afternoon"
+			}
+			else if(h >= 17 && h < 21){
+				obj2.innerHTML = "Good Evening";
+			}
+			else{
+				obj2.innerHTML = "Good Night";
+			}
+		}
+
+		setInterval(s,10);
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+
+
+
+
+0.	CREATE OR REPLACE PROCEDURE print_hello IS
+	BEGIN
+		DBMS_OUTPUT.PUT_LINE('Good day to you');
+	END;
+	/
+
+	BEGIN
+		print_hello;
+	END;
+	/
+
+1)CREATE OR REPLACE PROCEDURE proc1(dept_n department.dept_name%TYPE) AS
+	CURSOR c1 IS SELECT * FROM instructor WHERE dept_name = dept_n;
+	CURSOR c2 IS SELECT * FROM course WHERE dept_name = dept_n;
+	BEGIN
+		FOR temp IN c1
+		LOOP
+			DBMS_OUTPUT.PUT_LINE(temp.id ||'  '||temp.name);
+		END LOOP;
+		FOR temp IN c2
+		LOOP
+			DBMS_OUTPUT.PUT_LINE(temp.course_id || '  ' || temp.title );
+		END LOOP;
+	END;
+	/
+
+	DECLARE
+		dept_name department.dept_name%TYPE := '&dept_name';
+	BEGIN
+		proc1(dept_name);
+	END;
+	/
+
+Enter value for dept_name: Physics
+old   2: dept_name department.dept_name%TYPE := '&dept_name';
+new   2: dept_name department.dept_name%TYPE := 'Physics';
+22222  Einstein
+33456  Gold
+PHY-101  Physical Principles
+
+
+2) 	CREATE OR REPLACE PROCEDURE course_popular(dept_n department.dept_name%TYPE) AS
+	v course.course_id%TYPE;
+	BEGIN
+		SELECT course_id INTO v FROM
+			(WITH 	tot_stud AS (select course_id,count(distinct id) as c_id from course natural join takes where dept_name = dept_n group by course_id),
+				max_stud AS (SELECT MAX(c_id) AS c_id FROM tot_stud)
+			SELECT course_id FROM tot_stud,max_stud WHERE tot_stud.c_id = max_stud.c_id);
+		DBMS_OUTPUT.PUT_LINE(dept_n ||' : '|| v);
+	END;
+	/
+	DECLARE
+	CURSOR c IS SELECT dept_name FROM department;
+	BEGIN
+		FOR temp IN c
+		LOOP
+			course_popular(temp.dept_name);
+		END LOOP;
+	END;
+	/
+
+	Biology : BIO-101
+	Comp. Sci. : CS-101
+	Elec. Eng. : EE-181
+	Finance : FIN-201
+	History : HIS-351
+	Music : MU-199
+	Physics : PHY-101
+
+
+
+4)	CREATE OR REPLACE FUNCTION sqr(num NUMBER)
+	RETURN NUMBER
+	AS
+	BEGIN
+		RETURN num*num;
+	END;
+	/
+
+	DECLARE
+		num NUMBER := &num;
+	BEGIN
+		DBMS_OUTPUT.PUT_LINE('Square is ' || sqr(num));
+	END;
+	/
+
+Enter value for num: 34
+old   2: num NUMBER := &num;
+new   2: num NUMBER := 34;
+Square is 1156
+
+5)	CREATE OR REPLACE FUNCTION highest_paid(dept department.dept_name%TYPE)
+	RETURN instructor.id%TYPE
+	AS
+	c instructor.id%TYPE;
+	BEGIN
+		SELECT id INTO c FROM instructor WHERE dept_name = dept AND salary = (SELECT MAX(salary) FROM (SELECT * FROM instructor WHERE dept_name = dept));
+		RETURN c;
+	END;
+	/
+
+	DECLARE
+		CURSOR c IS SELECT dept_name from department;
+	BEGIN
+		FOR temp IN c
+		LOOP
+			DBMS_OUTPUT.PUT_LINE(temp.dept_name || '  ' || highest_paid(temp.dept_name));
+		END LOOP;
+	END;
+	/
+
+Biology  76766
+Comp. Sci.  83821
+Elec. Eng.  98345
+Finance  12121
+History  58583
+Music  15151
+Physics  22222
+
+PL/SQL procedure successfully completed.
+
+
+6)	CREATE OR REPLACE PACKAGE pck AS
+		PROCEDURE list_inst(dept_n instructor.dept_name%TYPE);
+		FUNCTION max_salary(dept_n department.dept_name%TYPE) RETURN instructor.salary%TYPE;
+	END pck;
+	/
+
+
+
+	CREATE OR REPLACE PACKAGE BODY pck AS
+		FUNCTION max_salary (dept_n department.dept_name%TYPE)
+			RETURN instructor.salary%TYPE
+			AS
+				v instructor.salary%TYPE;
+			BEGIN
+				SELECT salary INTO v FROM instructor WHERE dept_name = dept_n AND salary = (SELECT MAX(salary) FROM instructor WHERE dept_name = dept_n);
+				RETURN v;
+			END;
+		PROCEDURE list_inst(dept_n instructor.dept_name%TYPE) AS
+			CURSOR c1 IS SELECT id,name FROM instructor WHERE instructor.dept_name = dept_n;
+			BEGIN
+				FOR temp IN c
+				LOOP
+					DBMS_OUTPUT.PUT_LINE('instructor name: '|| temp.name);
+				END LOOP;
+			END;
+		END pck;
+		/
+
+		DECLARE
+			dept_n department.dept_name%TYPE := '&dept_name';
+		BEGIN
+			DBMS_OUTPUT.PUT_LINE('Listing instructors in ' ||dept_n);
+			pck.list_inst(dept_n);
+			DBMS_OUTPUT.PUT_LINE('Highest salary in '||dept_n||' department is '||pck.max_salary(dept_n));
+		END;
+		/
+
+	Enter value for dept_name: History
+	old   2: dept_n department.dept_name%TYPE := '&dept_name';
+	new   2: dept_n department.dept_name%TYPE := 'History';
+	Listing instructors in History
+	instructor name: El Said
+	instructor name: Califieri
+	Highest salary in History department is 62000
+
+	PL/SQL procedure successfully completed.
+
+7)	CREATE OR REPLACE PROCEDURE interest (principle IN PLS_INTEGER, rate IN PLS_INTEGER,  year IN  PLS_INTEGER,  si OUT PLS_INTEGER, ci OUT PLS_INTEGER, total_sum IN OUT PLS_INTEGER) AS
+	BEGIN
+		si := principle*rate*year/100;
+		total_sum := si + principle;
+		ci := principle*((1+rate/100)**year);
+	END;
+	/
+
+	DECLARE
+	p PLS_INTEGER := '&principle';
+	r PLS_INTEGER := '&rate';
+	t PLS_INTEGER := '&time';
+	si PLS_INTEGER;
+	ci PLS_INTEGER;
+	t_s PLS_INTEGER;
+	BEGIN
+		interest(p,r,t,si,ci,t_s);
+		DBMS_OUTPUT.PUT_LINE(si||' '||t_s||' '||ci);
+	END;
+	/
+
+	Enter value for principle: 500
+	old   2: p PLS_INTEGER := '&principle';
+	new   2: p PLS_INTEGER := '500';
+	Enter value for rate: 5
+	old   3: r PLS_INTEGER := '&rate';
+	new   3: r PLS_INTEGER := '5';
+	Enter value for time: 3
+	old   4: t PLS_INTEGER := '&time';
+	new   4: t PLS_INTEGER := '3';
+	75 575 579
+
+	PL/SQL procedure successfully completed.

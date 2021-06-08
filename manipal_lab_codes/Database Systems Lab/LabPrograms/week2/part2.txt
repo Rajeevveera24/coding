@@ -1,0 +1,206 @@
+1)	SELECT name,dept_name FROM Student;
+	
+NAME                 DEPT_NAME
+-------------------- --------------------
+Zhang                Comp. Sci.
+Shankar              Comp. Sci.
+Brandt               History
+Chavez               Finance
+Peltier              Physics
+Levy                 Physics
+Williams             Comp. Sci.
+Sanchez              Music
+Snow                 Physics
+Brown                Comp. Sci.
+Aoi                  Elec. Eng.
+
+NAME                 DEPT_NAME
+-------------------- --------------------
+Bourikas             Elec. Eng.
+Tanaka               Biology
+
+
+2)	SELECT name FROM Instructor WHERE dept_name LIKE '%Comp%';
+
+NAME
+--------------------
+Srinivasan
+Katz
+Brandt
+
+
+3)	SELECT title FROM Course WHERE dept_name LIKE '%Comp%' AND credits = 3;
+
+TITLE
+--------------------------------------------------
+Robotics
+Image Processing
+Database System Concepts
+
+
+4)	SELECT Course.course_id,Course.title FROM Course,Takes WHERE Takes.id = 12345 AND Course.course_id = Takes.course_id ;
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-101   Intro. to Computer Science
+CS-190   Game Design
+CS-315   Robotics
+CS-347   Database System Concepts
+
+
+5)	SELECT name FROM Instructor WHERE salary > 40000 AND salary < 90000;
+	
+NAME
+--------------------
+Srinivasan
+El Said
+Gold
+Katz
+Califieri
+Singh
+Crick
+Kim
+
+
+15)	(SELECT Instructor.ID FROM Instructor) MINUS (SELECT id FROM Teaches); 
+
+ID
+-----
+33456
+58583
+76543
+
+
+16)	SELECT S.Name, C.title, T.year 
+	FROM Student S,Course C,Takes T,Section Sc 
+	WHERE Sc.room_number = 101 AND S.id = T.id AND T.course_id = C.course_id
+	AND T.course_id = Sc.course_id AND T.sec_id = Sc.sec_id AND T.semester = Sc.semester AND T.year = Sc.year;
+
+NAME                 TITLE                                                    YEAR
+-------------------- -------------------------------------------------- ----------
+Bourikas             Intro. to Computer Science                               2009
+Brown                Intro. to Computer Science                               2009
+Williams             Intro. to Computer Science                               2009
+Levy                 Intro. to Computer Science                               2009
+Levy                 Intro. to Computer Science                               2010
+Shankar              Intro. to Computer Science                               2009
+Zhang                Intro. to Computer Science                               2009
+Chavez               Investment Banking                                       2010
+Sanchez              Music Video Production                                   2010
+
+9 rows selected.
+
+
+17)	SELECT S.name, T.course_id ,C.title AS c_name
+	FROM Student S, Takes T, Course C
+	WHERE T.year = 2010 AND S.id = T.id AND T.course_id = C.course_id;
+
+
+NAME                 COURSE_I C_NAME
+-------------------- -------- --------------------------------------------------
+Tanaka               BIO-301  Genetics
+Levy                 CS-101   Intro. to Computer Science
+Bourikas             CS-315   Robotics
+Shankar              CS-315   Robotics
+Brown                CS-319   Image Processing
+Levy                 CS-319   Image Processing
+Chavez               FIN-201  Investment Banking
+Brandt               HIS-351  World History
+Sanchez              MU-199   Music Video Production
+
+9 rows selected.
+
+
+18)	SELECT DISTINCT i1.name, i1.salary AS inst_salary
+	FROM Instructor i1, Instructor i2
+	WHERE i1.salary > i2.salary AND i2.dept_name LIKE '%Comp%';
+
+NAME                 INST_SALARY
+-------------------- -----------
+Crick                      72000
+Katz                       75000
+Gold                       87000
+Einstein                   95000
+Wu                         90000
+Brandt                     92000
+Singh                      80000
+Kim                        80000
+
+8 rows selected.
+
+
+19)	SELECT name FROM Instructor WHERE dept_name LIKE '%si%';
+
+NAME
+--------------------
+Mozart
+Einstein
+Gold
+
+
+9)	SELECT name, LENGTH(name) FROM student;
+
+NAME                 LENGTH(NAME)
+-------------------- ------------
+Zhang                           5
+Shankar                         7
+Brandt                          6
+Chavez                          6
+Peltier                         7
+Levy                            4
+Williams                        8
+Sanchez                         7
+Snow                            4
+Brown                           5
+Aoi                             3
+
+NAME                 LENGTH(NAME)
+-------------------- ------------
+Bourikas                        8
+Tanaka                          6
+
+13 rows selected.
+
+
+10)	SELECT dept_name, SUBSTR(dept_name,3,3) FROM Department;
+
+DEPT_NAME            SUB
+-------------------- ---
+Biology              olo
+Comp. Sci.           mp.
+Elec. Eng.           ec.
+Finance              nan
+History              sto
+Music                sic
+Physics              ysi
+
+7 rows selected.
+
+
+11)	SELECT UPPER(name) FROM Instructor;
+
+UPPER(NAME)
+--------------------
+SRINIVASAN
+WU
+MOZART
+EINSTEIN
+EL SAID
+GOLD
+KATZ
+CALIFIERI
+SINGH
+CRICK
+BRANDT
+
+UPPER(NAME)
+--------------------
+KIM
+
+
+12)	UPDATE Course SET credits = 0 WHERE credits = NULL; 
+
+0 rows updated.
+
+
+13)

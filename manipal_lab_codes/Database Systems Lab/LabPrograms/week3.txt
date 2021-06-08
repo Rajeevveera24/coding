@@ -1,0 +1,294 @@
+1)	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Fall' AND S.year = 2009
+	UNION ALL
+	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Spring' AND S.year = 2010;
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-101   Intro. to Computer Science
+CS-101   Intro. to Computer Science
+CS-315   Robotics
+CS-319   Image Processing
+CS-319   Image Processing
+CS-347   Database System Concepts
+FIN-201  Investment Banking
+HIS-351  World History
+MU-199   Music Video Production
+PHY-101  Physical Principles
+
+10 rows selected.
+
+
+2)	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Fall' AND S.year = 2009
+	INTERSECT 
+	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Spring' AND S.year = 2010;
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-101   Intro. to Computer Science
+
+
+3)	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Fall' AND S.year = 2009
+	MINUS 
+	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Spring' AND S.year = 2010;
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-347   Database System Concepts
+PHY-101  Physical Principles
+
+
+4)	SELECT C.title 
+	FROM course C
+	WHERE C.course_id NOT IN (SELECT course_id
+				  FROM takes)
+	;
+
+TITLE
+--------------------------------------------------
+Computational Biology
+
+
+5)	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Fall' AND S.year = 2009
+	AND C.course_id IN
+	(SELECT C.course_id
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Spring' AND S.year = 2010);
+
+6)	SELECT COUNT(DISTINCT T.id)
+	FROM takes T
+	WHERE T.course_id IN
+	(SELECT TE.course_id 
+	 FROM teaches TE 
+	 WHERE T.course_id = TE.course_id AND TE.id = 10101);
+
+COUNT(DISTINCTT.ID)
+-------------------
+                  6
+
+
+7)	SELECT C.course_id, C.title
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Fall' AND S.year = 2009
+	AND C.course_id NOT IN
+	(SELECT C.course_id
+	FROM course C,section S
+	WHERE S.course_id = C.course_id AND S.semester = 'Spring' AND S.year = 2010);
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-347   Database System Concepts
+PHY-101  Physical Principles
+
+
+8)	SELECT DISTINCT S.name 
+	FROM Student S	
+	WHERE S.name IN
+	(SELECT DISTINCT I.name
+	 FROM instructor I);
+
+NAME
+--------------------
+Brandt
+
+9)	SELECT DISTINCT I.name 
+	FROM instructor I
+	WHERE I.salary > SOME
+	(SELECT salary
+	 FROM instructor
+	 WHERE dept_name = 'Biology');
+
+NAME
+--------------------
+Einstein
+Gold
+Brandt
+Wu
+Kim
+Singh
+Katz
+
+7 rows selected.
+
+10)	SELECT DISTINCT I.name 
+	FROM instructor I
+	WHERE I.salary > ALL
+	(SELECT salary
+	 FROM instructor
+	 WHERE dept_name = 'Biology');
+
+NAME
+--------------------
+Einstein
+Gold
+Brandt
+Wu
+Kim
+Singh
+Katz
+
+7 rows selected.
+
+11)	SELECT dept_name, AVG(salary)
+	FROM instructor 
+	GROUP BY dept_name
+	HAVING AVG(salary) >= ALL
+	(SELECT AVG(Salary)
+	 FROM instructor
+	 GROUP BY dept_name);
+
+DEPT_NAME            AVG(SALARY)
+-------------------- -----------
+Physics                    91000
+
+12)	SELECT dept_name
+	FROM department 
+	WHERE budget < 
+	(SELECT AVG(salary)
+	 FROM instructor);
+
+DEPT_NAME
+--------------------
+History
+Physics
+
+13)	SELECT C.course_id, C.title
+	FROM course C, section S
+	WHERE C.course_id = S.course_iD AND S.semester = 'Fall' and S.year = 2009
+	AND EXISTS
+	(SELECT course_id
+	 FROM section Sc
+	 WHERE semester = 'Spring' AND year = 2010 AND S.course_id = Sc.course_id);
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-101   Intro. to Computer Science
+
+14)	SELECT DISTINCT S.id, S.name
+	FROM student S
+	WHERE NOT EXISTS
+	((SELECT course_id
+	  FROM course
+	  WHERE dept_name = 'Biology')
+	 MINUS
+	 (SELECT T.course_id
+	  FROM takes T
+	  WHERE S.id = T.id));
+
+no rows selected
+
+15)	SELECT course_id,title
+	FROM course C
+	WHERE
+	(SELECT COUNT(course_id)
+	 FROM section S 
+	 WHERE S.course_id = C.course_id AND S.year = 2009
+	 ) <= 1;
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+BIO-101  Intro. to Biology
+BIO-301  Genetics
+BIO-399  Computational Biology
+CS-101   Intro. to Computer Science
+CS-315   Robotics
+CS-319   Image Processing
+CS-347   Database System Concepts
+EE-181   Intro. to Digital Systems
+FIN-201  Investment Banking
+HIS-351  World History
+MU-199   Music Video Production
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+PHY-101  Physical Principles
+
+
+16)	SELECT S.id, S.name
+	FROM student S
+	WHERE (SELECT COUNT(DISTINCT T.course_id)
+	       FROM course C, takes T
+	       WHERE C.course_id = T.course_id AND T.id = S.id AND C.dept_name LIKE '%Comp%')>=2;
+
+ID    NAME
+----- --------------------
+00128 Zhang
+12345 Shankar
+45678 Levy
+54321 Williams
+76543 Brown
+98765 Bourikas
+
+6 rows selected.
+
+
+17)	SELECT dept_name, avg_salary
+	FROM (SELECT dept_name, AVG(salary) AS avg_salary
+	      FROM instructor
+	      GROUP BY dept_name
+	     )
+	WHERE avg_salary>42000;
+
+DEPT_NAME            AVG_SALARY
+-------------------- ----------
+Elec. Eng.                80000
+Physics                   91000
+Comp. Sci.           77333.3333
+Finance                   85000
+Biology                   72000
+History                   61000
+
+6 rows selected.
+
+18)	CREATE VIEW all_courses AS
+	SELECT C.course_id AS course_id, C.title AS title, S.building AS building, S.room_number AS room_no
+	FROM course C, section S
+	WHERE S.course_id = C.course_id AND S.year = 2009 AND S.semester = 'Fall';
+
+View created.
+
+19)	Select course_id, title
+	FROM all_courses;  
+
+COURSE_I TITLE
+-------- --------------------------------------------------
+CS-101   Intro. to Computer Science
+CS-347   Database System Concepts
+PHY-101  Physical Principles
+
+
+20)	CREATE VIEW dept_total_salary AS
+	SELECT D.dept_name AS dept_name,SUM(I.salary) AS total_salary
+ 	FROM department D, instructor I
+	WHERE I.dept_name = D.dept_name
+	GROUP BY D.dept_name;
+
+View created.
+
+SQL> select
+  2  * from dept_total_salary;
+
+DEPT_NAME            TOTAL_SALARY
+-------------------- ------------
+Elec. Eng.                  80000
+Physics                    182000
+Comp. Sci.                 232000
+Finance                    170000
+Biology                     72000
+Music                       40000
+History                    122000
+
+7 rows selected.

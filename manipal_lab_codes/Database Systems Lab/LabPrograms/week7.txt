@@ -1,0 +1,185 @@
+create table StudentTable(rollno number(1), gpa numeric(2,1));
+insert into studenttable values(1,5.8);
+insert into studenttable values(2,6.5);
+insert into studenttable values(3,3.4);
+insert into studenttable values(4,7.8);
+insert into studenttable values(5,9.5);
+
+1)
+declare
+	rno number(1);
+	cgpa numeric(2,1);
+begin
+	rno:= '&your_rno';
+	select gpa into cgpa from studenttable where rollno = rno;
+	dbms_output.put_line('Roll No: '||rno||' GPA: '||cgpa);
+end;
+/
+
+
+
+2) 
+declare
+	rno number(1);
+	cgpa numeric(2,1);
+begin
+	rno:= '&your_rno';
+	select gpa into cgpa from studenttable where rollno = rno;
+	if cgpa <= 4 then
+		dbms_output.put_line('Grade: F');
+	elsif cgpa > 4 and cgpa <=5 then
+		dbms_output.put_line('Grade: E');
+	elsif cgpa > 5 and cgpa <=6 then
+		dbms_output.put_line('Grade: D');
+	elsif cgpa > 6 and cgpa <=7 then
+		dbms_output.put_line('Grade: C');
+	elsif cgpa > 7 and cgpa <=8 then
+		dbms_output.put_line('Grade: B');
+	elsif cgpa > 8 and cgpa <=9 then
+		dbms_output.put_line('Grade: A');
+	else
+		dbms_output.put_line('Grade: A+');
+	end if;	
+
+end;
+/
+
+
+
+3) 
+declare
+	idate date;
+	rdate date;
+	days numeric(10,5);
+	fine numeric(10,5);
+begin
+	idate:= '&issue_date';
+	rdate:= '&return_date';
+	days:= rdate - idate;
+	if days <= 7 then 
+		fine:= 0;
+	elsif days <=15 then
+		fine:= (days-7);
+	elsif days <=30 then
+		fine:= days*2 - 8;
+	else
+		fine:= days*5 - 38;
+	end if;
+	dbms_output.put_line('Fine: '||fine);
+end;
+/
+
+
+
+4)
+declare
+	rno number(1);
+	cgpa numeric(2,1);
+	x number := 1;
+begin
+	loop
+		if x > 5 then exit;
+		end if;
+		select gpa into cgpa from studenttable where rollno = x;
+		if cgpa <= 4 then
+			dbms_output.put_line('Grade: F');
+		elsif cgpa > 4 and cgpa <=5 then
+			dbms_output.put_line('Grade: E');
+		elsif cgpa > 5 and cgpa <=6 then
+			dbms_output.put_line('Grade: D');
+		elsif cgpa > 6 and cgpa <=7 then
+			dbms_output.put_line('Grade: C');
+		elsif cgpa > 7 and cgpa <=8 then
+			dbms_output.put_line('Grade: B');
+		elsif cgpa > 8 and cgpa <=9 then
+			dbms_output.put_line('Grade: A');
+		else
+			dbms_output.put_line('Grade: A+');
+		end if;
+		x:=x+1;
+	end loop;
+end;
+/
+
+
+
+5) alter table studenttable add lettergrade varchar2(2);
+
+declare
+	rno number(1);
+	cgpa numeric(2,1);
+	x number := 1;
+begin
+	while x <= 5
+		loop
+			select gpa into cgpa from studenttable where rollno = x;
+			dbms_output.put_line(cgpa||'  '||x);
+			if cgpa <= 4 then
+				update studenttable set lettergrade = 'F' where rollno = x;
+			elsif cgpa > 4 and cgpa <=5 then
+				update studenttable set lettergrade = 'E' where rollno = x;
+			elsif cgpa > 5 and cgpa <=6 then
+				update studenttable set lettergrade = 'D' where rollno = x;
+			elsif cgpa > 6 and cgpa <=7 then
+				update studenttable set lettergrade = 'C' where rollno = x;
+			elsif cgpa > 7 and cgpa <=8 then
+				update studenttable set lettergrade = 'B' where rollno = x;
+			elsif cgpa > 8 and cgpa <=9 then
+				update studenttable set lettergrade = 'A' where rollno = x;
+			else
+				update studenttable set lettergrade = 'A+' where rollno = x;
+			end if;
+			x:=x+1;
+		end loop;
+end;
+/
+
+
+
+6)	declare
+                rno number(1);
+                cgpa numeric(2,1);
+                x number := 1;
+                maxgpa numeric(2,1):=0.0;
+begin
+                for x in 1..5 loop
+                                select gpa into cgpa from studenttable where rollno=x;
+                                if cgpa > maxgpa then
+                                                maxgpa:= cgpa;
+                                end if;
+                end loop;
+                dbms_output.put_line('Max gpa: '||maxgpa);   
+ 
+end;
+/
+
+
+7)
+declare
+	rno number(1);
+	cgpa numeric(2,1);
+	x number := 1;
+begin
+	<<loop1>>
+		select gpa into cgpa from studenttable where rollno = x;
+		if cgpa <= 4 then
+			dbms_output.put_line('Grade: F');
+		elsif cgpa > 4 and cgpa <=5 then
+			dbms_output.put_line('Grade: E');
+		elsif cgpa > 5 and cgpa <=6 then
+			dbms_output.put_line('Grade: D');
+		elsif cgpa > 6 and cgpa <=7 then
+			dbms_output.put_line('Grade: C');
+		elsif cgpa > 7 and cgpa <=8 then
+			dbms_output.put_line('Grade: B');
+		elsif cgpa > 8 and cgpa <=9 then
+			dbms_output.put_line('Grade: A');
+		else
+			dbms_output.put_line('Grade: A+');
+		end if;
+		x:=x+1;
+		IF X <=5 THEN
+			GOTO loop1;
+		END IF;
+end;
+/

@@ -1,0 +1,44 @@
+form{
+	width: 40%;
+	text-align: left;
+	align-content: right;
+	align-items: right;
+}
+
+form input{
+	/*align-items: right;*/
+	/*align-content: right;*/
+	/*align-self: right;*/
+	width: relative;
+	/*float: left;*/
+	padding: 10px 10px;
+	margin: 10px 0;
+	/*width : 70%;*/
+	height: 30px;
+	/*margin-right: 100px;*/
+	margin-left: 60px;
+	/*float: right;*/
+	box-sizing: border-box;
+}
+form input[type = textarea]{
+  	/*height: 50px;*/
+  	padding: 5px 5px;
+  	box-sizing: border-box;
+  	border: 2px solid #ccc;
+  	border-radius: 4px;
+  	background-color: #f8f8f8;
+  	resize: relative;
+  	max-height: 60%;
+  	min-height: 10%;
+}
+form input[type = checkbox]{
+	width : 10%;
+	columns: 2;
+	margin: 0px;
+	vertical-align: center;
+	/*float: left;*/
+	margin-left: 100px;
+}
+form label{
+	text-align: left;
+}

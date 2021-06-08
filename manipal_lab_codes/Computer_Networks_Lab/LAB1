@@ -1,0 +1,257 @@
+
+I. 
+
+man ifconfig
+
+NAME
+       ifconfig - configure a network interface
+
+SYNOPSIS
+       ifconfig [-v] [-a] [-s] [interface]
+       ifconfig [-v] interface [aftype] options | address ...
+
+DESCRIPTION
+       Ifconfig  is  used  to  configure  the kernel-resident network interfaces.  It is used at boot time to set up interfaces as necessary.
+       After that, it is usually only needed when debugging or when system tuning is needed.
+
+       If no arguments are given, ifconfig displays the status of the currently active interfaces.  If a single interface argument is  given,
+       it  displays  the status of the given interface only; if a single -a argument is given, it displays the status of all interfaces, even
+       those that are down.  Otherwise, it configures an interface.
+
+Address Families
+       If the first argument after the interface name is recognized as the name of a supported address family, that address  family  is  used
+       for  decoding  and  displaying  all  protocol  addresses.   Currently supported address families include inet (TCP/IP, default), inet6
+       (IPv6), ax25 (AMPR Packet Radio), ddp (Appletalk Phase 2), ipx (Novell IPX) and netrom (AMPR Packet radio).
+
+OPTIONS
+       -a     display all interfaces which are currently available, even if down
+
+       -s    NAME
+       traceroute - print the route packets trace to network host
+
+SYNOPSIS
+       traceroute [-46dFITUnreAV] [-f first_ttl] [-g gate,...]
+               [-i device] [-m max_ttl] [-p port] [-s src_addr]
+               [-q nqueries] [-N squeries] [-t tos]
+               [-l flow_label] [-w waittime] [-z sendwait] [-UL] [-D]
+               [-P proto] [--sport=port] [-M method] [-O mod_options]
+               [--mtu] [--back]
+               host [packet_len]
+       traceroute6  [options]
+       tcptraceroute  [options]
+       lft  [options]
+
+DESCRIPTION
+       traceroute  tracks the route packets taken from an IP network on their way to a given host. It utilizes the IP protocol's time to live
+       (TTL) field and attempts to elicit an ICMP TIME_EXCEEDED response from each gateway along the path to the host.
+
+       traceroute6 is equivalent to traceroute -6
+
+       tcptraceroute is equivalent to traceroute -T
+
+       lft , the Layer Four Traceroute, performs a TCP traceroute, like traceroute -T , but attempts to provide compatibility with the origi‐
+       nal such implementation, also called "lft".
+
+       The  only required parameter is the name or IP address of the destination host .  The optional packet_len`gth is the total size of the
+       probing packet (default 60 bytes for IPv4 and 80 for IPv6). The specified size can be ignored in some situations or increased up to  a
+       minimal value.
+ display a short list (like netstat -i)
+
+       -v     be more verbose for some error conditions
+
+       interface
+              The name of the interface.  This is usually a driver name followed by a unit number, for example eth0 for  the  first  Ethernet
+              interface.  If your kernel supports alias interfaces, you can specify them with eth0:0 for the first alias of eth0. You can use
+              them to assign a second address. To delete an alias interface use ifconfig eth0:0 down.  Note: for every scope (i.e.  same  net
+              with address/netmask combination) all aliases are deleted, if you delete the first (primary).
+
+       up     This flag causes the interface to be activated.  It is implicitly specified if an address is assigned to the interface.
+
+       down   This flag causes the driver for this interface to be shut down.
+
+       [-]arp Enable or disable the use of the ARP protocol on this interface.
+
+
+man ping
+
+NAME
+       ping, ping6 - send ICMP ECHO_REQUEST to network hosts
+
+SYNOPSIS
+       ping [-aAbBdDfhLnOqrRUvV] [-c count] [-F flowlabel] [-i interval] [-I interface] [-l preload] [-m mark] [-M pmtudisc_option] [-N node‐
+       info_option] [-w deadline] [-W timeout] [-p pattern] [-Q tos] [-s packetsize] [-S sndbuf] [-t ttl] [-T  timestamp  option]  [hop  ...]
+       destination
+
+DESCRIPTION
+       ping  uses  the  ICMP protocol's mandatory ECHO_REQUEST datagram to elicit an ICMP ECHO_RESPONSE from a host or gateway.  ECHO_REQUEST
+       datagrams (``pings'') have an IP and ICMP header, followed by a struct timeval and then an arbitrary number of ``pad'' bytes  used  to
+       fill out the packet.
+
+       ping6  is  IPv6  version of ping, and can also send Node Information Queries (RFC4620).  Intermediate hops may not be allowed, because
+       IPv6 source routing was deprecated (RFC5095).
+
+OPTIONS
+       -a     Audible ping.
+
+       -A     Adaptive ping. Interpacket interval adapts to round-trip time, so that effectively not more than one (or more,  if  preload  is
+              set) unanswered probe is present in the network. Minimal interval is 200msec for not super-user.  On networks with low rtt this
+              mode is essentially equivalent to flood mode.
+
+       -b     Allow pinging a broadcast address.
+
+       -B     Do not allow ping to change source address of probes.  The address is bound to one selected when ping starts.
+
+
+man traceroute
+
+NAME
+       traceroute - print the route packets trace to network host
+
+SYNOPSIS
+       traceroute [-46dFITUnreAV] [-f first_ttl] [-g gate,...]
+               [-i device] [-m max_ttl] [-p port] [-s src_addr]
+               [-q nqueries] [-N squeries] [-t tos]
+               [-l flow_label] [-w waittime] [-z sendwait] [-UL] [-D]
+               [-P proto] [--sport=port] [-M method] [-O mod_options]
+               [--mtu] [--back]
+               host [packet_len]
+       traceroute6  [options]
+       tcptraceroute  [options]
+       lft  [options]
+
+DESCRIPTION
+       traceroute  tracks the route packets taken from an IP network on their way to a given host. It utilizes the IP protocol's time to live
+       (TTL) field and attempts to elicit an ICMP TIME_EXCEEDED response from each gateway along the path to the host.
+
+       traceroute6 is equivalent to traceroute -6
+
+       tcptraceroute is equivalent to traceroute -T
+
+       lft , the Layer Four Traceroute, performs a TCP traceroute, like traceroute -T , but attempts to provide compatibility with the origi‐
+       nal such implementation, also called "lft".
+
+       The  only required parameter is the name or IP address of the destination host .  The optional packet_len`gth is the total size of the
+       probing packet (default 60 bytes for IPv4 and 80 for IPv6). The specified size can be ignored in some situations or increased up to  a
+       minimal value.
+
+	1.
+		my ip - 172.16.48.68
+		neighbour's IP - 172.16.48.67
+
+		ifconfig
+
+enp5s0    Link encap:Ethernet  HWaddr 74:46:a0:9f:9c:63  
+          inet addr:172.16.48.68  Bcast:172.16.48.255  Mask:255.255.255.0
+          inet6 addr: fe80::3ca9:b2a0:8ee5:51bd/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:42158 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:11232 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:24779588 (24.7 MB)  TX bytes:817522 (817.5 KB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:2132 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2132 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:390646 (390.6 KB)  TX bytes:390646 (390.6 KB)
+
+virbr0    Link encap:Ethernet  HWaddr 00:00:00:00:00:00  
+          inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+
+2.
+
+a)
+
+student@selab-29:~$ ping google.com
+PING google.com (172.217.166.110) 56(84) bytes of data.
+64 bytes from maa05s09-in-f14.1e100.net (172.217.166.110): icmp_seq=1 ttl=55 time=32.1 ms
+64 bytes from maa05s09-in-f14.1e100.net (172.217.166.110): icmp_seq=2 ttl=55 time=43.1 ms
+64 bytes from maa05s09-in-f14.1e100.net (172.217.166.110): icmp_seq=3 ttl=55 time=36.4 ms
+64 bytes from maa05s09-in-f14.1e100.net (172.217.166.110): icmp_seq=4 ttl=55 time=43.2 ms
+^C
+--- google.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 32.168/38.774/43.282/4.721 ms
+
+b)
+
+PING facebook.com (157.240.25.35) 56(84) bytes of data.
+64 bytes from edge-star-mini-shv-02-sin2.facebook.com (157.240.25.35): icmp_seq=1 ttl=51 time=84.1 ms
+64 bytes from edge-star-mini-shv-02-sin2.facebook.com (157.240.25.35): icmp_seq=2 ttl=51 time=87.2 ms
+64 bytes from edge-star-mini-shv-02-sin2.facebook.com (157.240.25.35): icmp_seq=3 ttl=51 time=95.6 ms
+64 bytes from edge-star-mini-shv-02-sin2.facebook.com (157.240.25.35): icmp_seq=4 ttl=51 time=97.0 ms
+^C
+--- facebook.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 84.146/91.006/97.065/5.474 ms
+
+
+3.
+	ifconfig -a
+
+enp5s0    Link encap:Ethernet  HWaddr 74:46:a0:9f:9c:63  
+          inet addr:172.16.48.68  Bcast:172.16.48.255  Mask:255.255.255.0
+          inet6 addr: fe80::3ca9:b2a0:8ee5:51bd/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:42951 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:11317 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:24855127 (24.8 MB)  TX bytes:821924 (821.9 KB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:2196 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2196 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:410026 (410.0 KB)  TX bytes:410026 (410.0 KB)
+
+virbr0    Link encap:Ethernet  HWaddr 00:00:00:00:00:00  
+          inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+virbr0-nic Link encap:Ethernet  HWaddr 52:54:00:e6:15:7b  
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+4.
+	
+5.
+
+	PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+	64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.053 ms
+	64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.050 ms
+	64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.051 ms
+	64 bytes from 127.0.0.1: icmp_seq=4 ttl=64 time=0.050 ms
+	64 bytes from 127.0.0.1: icmp_seq=5 ttl=64 time=0.056 ms
+	64 bytes from 127.0.0.1: icmp_seq=6 ttl=64 time=0.055 ms
+	^C
+	--- 127.0.0.1 ping statistics ---
+	6 packets transmitted, 6 received, 0% packet loss, time 4996ms
+	rtt min/avg/max/mdev = 0.050/0.052/0.056/0.007 ms
+
+6.
+
+
+
+
+
+
+

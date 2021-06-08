@@ -1,0 +1,29 @@
+1)
+CREATE TABLE employee(
+	emp_no NUMBER(10),
+	emp_name CHAR(30),
+	emp_address VARCHAR(50)
+);
+
+2)
+INSERT INTO employee VALUES	(2018000456,'Rajeev','XYZ,,67,abcd');
+INSERT INTO employee VALUES	(2017000001,'Qwerty','65,Manipal, Mangalore');
+INSERT INTO employee VALUES	(2010002345,'TikTok','Ywjhbjhb,68,9tyh');
+INSERT INTO employee VALUES	(2000000001,'Shyam','Grey Town,246,Jiyo');
+INSERT INTO employee VALUES	(2011111012,'India','Manipal, Udupi');
+
+3)	SELECT emp_name FROM employee;
+
+4)	SELECT * FROM employee WHERE emp_address LIKE '%Manipal%';
+
+5)	ALTER TABLE employee ADD (salary NUMBER(7));
+
+6)	UPDATE employee SET salary = 70000;
+
+DESCRIBE employee;
+
+DELETE FROM employee WHERE emp_address LIKE '%Mangalore%';
+
+RENAME employee TO employee1;
+
+DROP TABLE employee1;

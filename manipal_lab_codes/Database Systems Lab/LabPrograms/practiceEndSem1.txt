@@ -1,0 +1,235 @@
+--Additional Questions
+
+--LAB 2
+--8.
+
+        WITH studNumCourse AS (
+                SELECT S.id AS id, COUNT(T.course_id) AS cntCourse
+                FROM (student S LEFT OUTER JOIN takes T ON S.id = T.id)  WHERE S.id IN (SELECT DISTINCT(id) FROM student)
+                GROUP BY S.id
+        )
+        SELECT S.name AS sName, S.dept_name, I.name AS iName, SNC.cntCourse AS registered_course_count
+        FROM student S INNER JOIN studNumCourse SNC ON SNC.id = S.id LEFT OUTER JOIN advisor A ON S.id = A.s_id LEFT OUTER JOIN instructor I ON A.i_id = I.id;
+
+--LAB 3
+--3.
+         select I.id,I.name, C.course_id, C.title
+         from instructor I left outer join teaches T ON T.id = I.id LEFT OUTER JOIN course C ON T.course_id = C.course_id;
+--4.     Same as 2.8
+
+--Lab 4
+--1.
+         SELECT dept_name,id,name,salary
+         FROM instructor I
+         WHERE I.salary = (SELECT MIN(I1.salary) FROM instructor I1 WHERE I1.dept_name = I.dept_name);
+
+--2.
+        SELECT SUM(salary), MAX(salary), MIN(salary), AVG(salary)
+        FROM instructor
+        WHERE dept_name = 'Comp. Sci.';
+--3.
+        WITH courseCSE AS (
+                SELECT course_id  AS c_id
+                FROM course
+                WHERE dept_name = 'Comp. Sci.'
+        ),
+        studentCourse AS (
+                SELECT T.id AS id, T.course_id AS c_id
+                FROM takes T
+        )
+        SELECT S.name
+        FROM student S
+        WHERE NOT EXISTS (
+                (
+                        SELECT *
+                        FROM courseCSE
+                )
+                MINUS
+                (
+                        SELECT SC.c_id
+                        FROM studentCourse SC
+                        WHERE SC.id = S.id
+                )
+        );
+
+
+--Lab 5
+
+--Lab 6
+
+--Lab 7
+
+--4.
+        DECLARE
+        BEGIN
+                FOR j IN 1..10
+                LOOP
+                        IF MOD(j,2) = 1
+                        THEN
+                                DBMS_OUTPUT.PUT_LINE(j);
+                        END IF;
+                END LOOP;
+        END;
+        /
+
+--8
+        DECLARE
+                invalidOperator EXCEPTION;
+                a NUMBER(2) := '&first_number';
+                b NUMBER(2) := '&second_number';
+                c VARCHAR2(1) := '&enter_operator';
+        BEGIN
+                IF c = '+' THEN
+                        DBMS_OUTPUT.PUT_LINE('a+b');
+                ELSIF c = '-' THEN
+                        DBMS_OUTPUT.PUT_LINE('a-b');
+                ELSIF c = '*' THEN
+                        DBMS_OUTPUT.PUT_LINE('a*b');
+                ELSIF c = 'd' THEN
+                        DBMS_OUTPUT.PUT_LINE('a/b');
+                ELSE
+                        RAISE invalidOperator;
+                END IF;
+                EXCEPTION
+                        WHEN ZERO_DIVIDE THEN
+                                DBMS_OUTPUT.PUT_LINE('Can\'t divide by zero ');
+                        WHEN invalidOperator THEN
+                                DBMS_OUTPUT.PUT_LINE('Enter proper operator');
+                        WHEN OTHERS THEN
+                                DBMS_OUTPUT.PUT_LINE('Some Error Occured');
+        END;
+        /
+
+--Lab 8
+
+--1.
+        DECLARE
+                CURSOR c IS SELECT name, dept_name, salary FROM instructor ORDER BY salary DESC;
+                cnt NUMBER(2) := 1;
+        BEGIN
+                FOR temp IN c
+                LOOP
+                        DBMS_OUTPUT.PUT_LINE(temp.name||'   '||temp.dept_name||'   '||temp.salary);
+                        cnt := cnt + 1;
+                        IF cnt > 10 THEN
+                                EXIT;
+                        END IF;
+                END LOOP;
+        END;
+        /
+
+--4.
+        DECLARE
+                CURSOR s IS SELECT dept_name FROM department;
+                CURSOR c(dept department.dept_name%TYPE) IS SELECT COUNT(DISTINCT course_id) AS countCourse, COUNT(DISTINCT id) AS countStudent FROM student, course WHERE course.dept_name = dept AND student.dept_name = dept;
+        BEGIN
+                FOR temp IN s
+                LOOP
+                        FOR tmp IN c(temp.dept_name)
+                        LOOP
+                                DBMS_OUTPUT.PUT_LINE(temp.dept_name||'   '||tmp.countCourse||'   '||tmp.countStudent);
+                        END LOOP;
+                END LOOP;
+        END;
+        /
+
+--lab 9
+
+--10.
+        CREATE OR REPLACE PROCEDURE proc (dept IN department.dept_name%TYPE) AS
+                CURSOR c1 IS SELECT name FROM student WHERE dept_name = dept;
+                CURSOR c2 IS SELECT course_id,title FROM course WHERE dept_name = dept;
+        BEGIN
+                FOR temp IN c1
+                LOOP
+                        DBMS_OUTPUT.PUT_LINE(temp.name);
+                END LOOP;
+                FOR temp IN c2
+                LOOP
+                        DBMS_OUTPUT.PUT_LINE(temp.course_id ||'  '||temp.title);
+                END LOOP;
+        END;
+        /
+
+--12.
+        CREATE OR REPLACE FUNCTION course_popular(dept department.dept_name%TYPE)
+        RETURN course.course_id%TYPE
+        AS
+        v course.course_id%TYPE;
+        BEGIN
+
+        SELECT course_id INTO v FROM
+                (
+                        WITH courseCount AS (
+                                SELECT course_id,title,COUNT(id) AS cnt FROM course NATURAL JOIN takes WHERE dept_name = dept GROUP BY course_id,title
+                        ),
+                        maxCourseCount AS(
+                                SELECT MAX(cnt) FROM courseCount
+                        )
+                        SELECT course_id
+                        FROM courseCount CC
+                        WHERE CC.cnt = (SELECT * FROM maxCourseCount)
+                );
+                RETURN v;
+        END;
+        /
+
+        DECLARE
+                CURSOR c IS SELECT dept_name FROM department;
+        BEGIN
+                FOR temp IN c
+                LOOP
+                        DBMS_OUTPUT.PUT_LINE(temp.dept_name||'   '||course_popular(temp.dept_name));
+                END LOOP;
+        END;
+        /
+
+--13.
+        CREATE OR REPLACE PROCEDURE hike10 (dept IN department.dept_name%TYPE, budget IN OUT department.budget%TYPE) AS
+        BEGIN
+                budget := 1.1 * budget;
+        END;
+        /
+
+        CREATE OR REPLACE FUNCTION printSal
+                RETURN department.budget%TYPE
+        AS
+                CURSOR c IS SELECT * FROM department;
+                newBudget department.budget%TYPE;
+        BEGIN
+                FOR temp IN C
+                LOOP
+                        newBudget := temp.budget;
+                        hike10(temp.dept_name,newBudget);
+                        DBMS_OUTPUT.PUT_LINE(temp.dept_name||'   '||temp.budget||'   '||newBudget);
+                END LOOP;
+                RETURN newBudget;
+        END;
+        /
+
+        DECLARE
+        BEGIN
+                printSal;
+        END;
+        /
+
+--14.
+        CREATE OR REPLACE PROCEDURE department_highest(dept department.dept_name%TYPE) AS
+                v instructor%ROWTYPE;
+        BEGIN
+                SELECT * INTO v FROM instructor WHERE dept_name = dept AND salary = (SELECT MAX(salary) FROM instructor WHERE dept_name = dept);
+                DBMS_OUTPUT.PUT_LINE(v.dept_name||'   '||v.id||'   '||v.name||'   '||v.salary);
+        END;
+        /
+
+        DECLARE
+                CURSOR c IS SELECT dept_name FROM department;
+        BEGIN
+                FOR temp IN c
+                LOOP
+                        department_highest(temp.dept_name);
+                END LOOP;
+        END;
+        /
+
+--Lab 10

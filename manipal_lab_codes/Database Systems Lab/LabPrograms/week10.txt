@@ -1,0 +1,94 @@
+2)      CREATE TABLE old_data_instructor (id VARCHAR2(5) NOT NULL, name VARCHAR2(20) NOT NULL, dept_name VARCHAR2(20) NOT NULL, salary NUMBER(8,2));
+
+
+        CREATE OR REPLACE TRIGGER triggerInsSal
+                AFTER UPDATE ON instructor
+                FOR EACH ROW
+                BEGIN
+                        IF :OLD.salary <> :NEW.salary THEN
+                                INSERT INTO old_data_instructor VALUES (:OLD.id, :OLD.name, :OLD.dept_name, :OLD.salary);
+                        END IF;
+                END;
+                /
+
+        UPDATE instructor SET salary = 1.1 * salary WHERE dept_name = 'Comp. Sci.';
+
+        3 rows updated.
+
+1)      CREATE TABLE log_change_takes( time_of_change TIMESTAMP,
+                                        id VARCHAR2(5) NOT NULL,
+                                        course_id VARCHAR2(8) NOT NULL,
+                                        sec_id VARCHAR2(8) NOT NULL,
+                                        semester VARCHAR2(6) NOT NULL,
+                                        year VARCHAR2(4) NOT NULL,
+                                        grade VARCHAR2(2),
+                                        PRIMARY KEY (time_of_change, id, course_id, sec_id, semester, year) );
+
+        CREATE OR REPLACE TRIGGER triggerChangeTakes
+                AFTER INSERT OR UPDATE OR DELETE ON takes
+                FOR EACH ROW
+                BEGIN
+                CASE
+                        WHEN DELETING THEN
+                                INSERT INTO log_change_takes VALUES (CURRENT_TIMESTAMP, :OLD.id, :OLD.course_id, :OLD.sec_id, :OLD.semester, :OLD.year, :OLD.grade);
+                        WHEN UPDATING THEN
+                                INSERT INTO log_change_takes VALUES (CURRENT_TIMESTAMP, :NEW.id, :NEW.course_id, :NEW.sec_id, :NEW.semester, :NEW.year, :NEW.grade);
+                        WHEN INSERTING THEN
+                                INSERT INTO log_change_takes VALUES (CURRENT_TIMESTAMP, :NEW.id, :NEW.course_id, :NEW.sec_id, :NEW.semester, :NEW.year, :NEW.grade);
+                END CASE;
+                END;
+                /
+
+                Trigger created.
+
+                DELETE FROM takes WHERE course_id = 'CS-101';
+
+                7 rows deleted.
+
+                SELECT * FROM log_change_takes;
+
+                TIME_OF_CHANGE                                                              ID    COURSE_I SEC_ID   SEMEST YEAR GR
+                --------------------------------------------------------------------------- ----- -------- -------- ------ ---- --
+                07-APR-19 09.42.27.823000 AM                                                00128 CS-101   1        Fall   2009 A
+                07-APR-19 09.42.27.823000 AM                                                12345 CS-101   1        Fall   2009 C
+                07-APR-19 09.42.27.823000 AM                                                45678 CS-101   1        Fall   2009 F
+                07-APR-19 09.42.27.839000 AM                                                45678 CS-101   1        Spring 2010 B+
+                07-APR-19 09.42.27.839000 AM                                                54321 CS-101   1        Fall   2009 A-
+                07-APR-19 09.42.27.839000 AM                                                76543 CS-101   1        Fall   2009 A
+                07-APR-19 09.42.27.839000 AM                                                98765 CS-101   1        Fall   2009 C-
+
+5)              CREATE VIEW advisorStudent AS
+                        SELECT A.i_id AS iID, I.name AS iName, A.s_id AS sID, S.name AS sName
+                        FROM advisor A INNER JOIN student S ON A.s_id = S.id INNER JOIN instructor I ON I.id = A.i_id;
+
+                CREATE OR REPLACE TRIGGER triggerAdvisorStudent
+                        INSTEAD OF DELETE ON advisorStudent
+                        FOR EACH ROW
+                        BEGIN
+                                DELETE FROM advisor WHERE s_id = :OLD.sID AND i_id = :OLD.iID;
+                        END;
+                        /
+
+                CREATE SAVEPOINT s2;
+
+                DELETE FROM advisorStudent WHERE iID = 22222;
+
+                2 rows deleted.
+
+                SELECT * FROM advisor;
+
+                S_ID  I_ID
+                ----- -----
+                00128 45565
+                12345 10101
+                23121 76543
+                76543 45565
+                76653 98345
+                98765 98345
+                98988 76766
+
+                7 rows selected.
+
+                ROLLBACK TO SAVEPOINT s2;
+
+                Rollback complete.

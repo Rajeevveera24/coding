@@ -1,0 +1,94 @@
+CREATE TABLE employee (
+	fname VARCHAR(20) NOT NULL,
+	mname VARCHAR(20),
+	lname VARCHAR(20) NOT NULL,
+	ssn NUMBER(8) NOT NULL, 
+	address VARCHAR(40) NOT NULL,
+	dob DATE,
+	SEX VARCHAR(1) NOT NULL CHECK (sex IN ('M', 'F','O')),
+	salary NUMBER(8),
+	super_ssn NUMBER(8),
+	dept_no NUMBER(8),
+	PRIMARY KEY (ssn)
+);
+
+ALTER TABLE employee ADD FOREIGN KEY (super_ssn) REFERENCES employee(ssn);
+
+INSERT INTO employee VALUES ('Harold', 'J', 'Finch', 101, 'World', '10-NOV-95', 'M', 192000, NULL, 1);
+INSERT INTO employee VALUES ('John', 'B', 'Smith', 102, '5th Avenue, NY', '21-FEB-89', 'M', 112000, 101, 2);
+INSERT INTO employee VALUES ('Sameen', 'R', 'Shaw', 103, '4th Loop, NY', '18-DEC-93', 'F', 112000, 101, 3);
+INSERT INTO employee VALUES ('Samantha', 'R', 'Prabhu', 104, '1, Chennai', '08-APR-94', 'F', 250000, NULL, 4);
+INSERT INTO employee VALUES ('Vaishnav', 'V', 'Nimkar', 105, 'Manipal', '10-JUN-98', 'M', 89000, 104, 2);
+INSERT INTO employee VALUES ('John', 'F', 'Greer', 106, 'Classified', '28-DEC-91', 'M', 800000, NULL, 5);
+
+CREATE TABLE department (
+	name VARCHAR(20) NOT NULL,
+	num NUMBER(8) NOT NULL,
+	man_ssn NUMBER(8) NOT NULL,
+	msdate DATE,
+	PRIMARY KEY (num),
+	FOREIGN KEY (man_ssn) REFERENCES employee(ssn)
+);
+
+INSERT INTO department VALUES ('Admin', 1, 101, '02-JAN-18');
+INSERT INTO department VALUES ('Research', 2, 102, '02-MAY-18');
+INSERT INTO department VALUES ('Finance', 3, 104, '02-JAN-17');
+INSERT INTO department VALUES ('Sales', 4, 105, '02-JAN-14');
+INSERT INTO department VALUES ('Marketing', 5, 106, '02-DEC-16');
+
+ALTER TABLE employee ADD CONSTRAINT FK FOREIGN KEY (dept_no) REFERENCES department(num);
+
+CREATE TABLE location (
+	name VARCHAR(20) NOT NULL,
+	num NUMBER(8) NOT NULL,
+	place VARCHAR(20) NOT NULL,
+	PRIMARY KEY (num, place),
+	FOREIGN KEY (num) REFERENCES department(num)
+);
+
+INSERT INTO location VALUES ('Admin',1, 'World');
+INSERT INTO location VALUES ('Research',2, 'Thornhill');
+INSERT INTO location VALUES ('Finance',3, 'NY');
+INSERT INTO location VALUES ('Sales',4, 'Brooklyn 99');
+INSERT INTO location VALUES ('Marketing',5, 'Texas');
+
+CREATE TABLE project (
+	name VARCHAR(20) NOT NULL,
+	num NUMBER(8) NOT NULL,
+	loc VARCHAR(20),
+	dept_num NUMBER(8) NOT NULL,
+	PRIMARY KEY (num),
+	FOREIGN KEY (dept_num) REFERENCES department(num)
+);
+
+INSERT INTO project VALUES ('ProjectX', 1, 'Stanford', 1);
+INSERT INTO project VALUES ('ProjectY', 2, 'Harvard', 2);
+INSERT INTO project VALUES ('ProjectZ', 3, 'Texas', 3);
+INSERT INTO project VALUES ('ProjectW', 4, 'California', 4);
+
+CREATE TABLE works_on (
+	essn NUMBER(8) NOT NULL,
+	pno NUMBER(8) NOT NULL,
+	hours NUMBER(4),
+	FOREIGN KEY (essn) REFERENCES employee(ssn),
+	FOREIGN KEY (pno) REFERENCES project(num)
+);
+
+INSERT INTO works_on VALUES (101, 1, 32);
+INSERT INTO works_on VALUES (102, 2, 16);
+INSERT INTO works_on VALUES (103, 3, 16);
+INSERT INTO works_on VALUES (104,4, 40);
+
+CREATE TABLE dependent(
+	essn NUMBER(8),
+	name VARCHAR(20) NOT NULL,
+	sex VARCHAR(1) NOT NULL check (sex in ('M', 'F','O')),
+	bdate DATE,
+	rel_ship VARCHAR(20) NOT NULL CHECK (rel_ship IN ('spouse','child','parent','sibling','other')),
+	FOREIGN KEY (essn) REFERENCES employee(ssn)
+);
+
+INSERT INTO dependent VALUES (104, 'Cyril', 'M', '10-OCT-97', 'sibling');
+INSERT INTO dependent VALUES (102, 'World', 'F', '10-OCT-75', 'parent');
+INSERT INTO dependent VALUES (102, 'Jakku', 'M', '10-OCT-10', 'child');
+INSERT INTO dependent VALUES (103, 'Dylan', 'F', '02-JAN-03', 'spouse');
